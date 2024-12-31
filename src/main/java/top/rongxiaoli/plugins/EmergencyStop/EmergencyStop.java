@@ -4,7 +4,9 @@ import net.mamoe.mirai.console.command.CommandContext;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
+import top.rongxiaoli.backend.interfaces.Plugin;
 
+@Plugin(name = "EmergencyStop")
 public class EmergencyStop extends ArisuBotAbstractSimpleCommand {
     private boolean isStopped = false;
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(EmergencyStop.class, "ArisuBot.EmergencyStop");

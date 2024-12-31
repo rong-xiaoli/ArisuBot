@@ -33,6 +33,7 @@ public final class ArisuBot extends JavaPlugin {
      */
     @Override
     public void onLoad(@NotNull PluginComponentStorage $this$onLoad) {
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
         getLogger().debug("Loading ArisuBot plugin config...");
         CONFIG.load();
         getLogger().debug("Loading ArisuBot plugin data...");
