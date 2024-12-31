@@ -16,11 +16,11 @@ public class Management extends ArisuBotAbstractCompositeCommand {
     }
     @SubCommand
     public void enable(CommandContext context, String targetPlugin) {
-        ArisuBot.LOADER.switchOn(targetPlugin);
+        ArisuBot.LOADER.reload(targetPlugin);
     }
     @SubCommand
     public void disable(CommandContext context, String targetPlugin) {
-        ArisuBot.LOADER.switchOff(targetPlugin);
+        ArisuBot.LOADER.shutdown(targetPlugin);
     }
     @Override
     public void load() {

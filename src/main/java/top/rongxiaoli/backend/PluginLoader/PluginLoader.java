@@ -22,20 +22,22 @@ public class PluginLoader {
     public PluginLoader() {
         this.PluginList = new CopyOnWriteArrayList<>();
     }
-    public void switchOn(String target) {
+    public void reload(String target) {
         for (PluginBase item :
                 PluginList) {
-            if (item.getClass().getName().contains(target)) {
-                item.enablePlugin();
+            String pluginName = item.getPrimaryName();
+            pluginName = pluginName.toLowerCase();
+            if (target.toLowerCase().contains(pluginName)) {
+                item.reload();
                 break;
             }
         }
     }
-    public void switchOff(String target) {
+    public void shutdown(String target) {
         for (PluginBase item :
                 PluginList) {
             if (item.getClass().getName().contains(target)) {
-                item.disablePlugin();
+                item.shutdown();
                 break;
             }
         }

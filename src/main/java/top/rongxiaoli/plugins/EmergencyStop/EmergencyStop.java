@@ -7,8 +7,6 @@ import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
 
 public class EmergencyStop extends ArisuBotAbstractSimpleCommand {
     private boolean isStopped = false;
-    private long lastSender = 0L;
-    private long lastSendTime = 0L;
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(EmergencyStop.class, "ArisuBot.EmergencyStop");
     public static final EmergencyStop INSTANCE = new EmergencyStop();
     public EmergencyStop() {

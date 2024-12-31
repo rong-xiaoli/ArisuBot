@@ -18,6 +18,7 @@ public class Ping extends ArisuBotAbstractSimpleCommand implements PluginBase {
 
     @Handler
     public void run(CommandContext context) {
+        if (!pluginStatus) return;
         if (!ArisuBot.PluginRunning) {
             return;
         }
@@ -29,6 +30,7 @@ public class Ping extends ArisuBotAbstractSimpleCommand implements PluginBase {
      */
     @Override
     public void load() {
+        enablePlugin();
         LOGGER.debug("Command loaded. ");
     }
 
@@ -45,6 +47,7 @@ public class Ping extends ArisuBotAbstractSimpleCommand implements PluginBase {
      */
     @Override
     public void shutdown() {
+        disablePlugin();
         LOGGER.debug("shutdown() invoked. Nothing special, pass. ");
     }
 
