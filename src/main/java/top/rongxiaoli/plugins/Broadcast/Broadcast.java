@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class Broadcast extends ArisuBotAbstractCompositeCommand {
+    private boolean pluginStatus = false;
     private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Broadcast.class, "ArisuBot.Broadcast");
     public static Broadcast INSTANCE = new Broadcast();
     public static MessageChainBuilder builder = new MessageChainBuilder();
@@ -30,6 +31,7 @@ public class Broadcast extends ArisuBotAbstractCompositeCommand {
     }
     @SubCommand
     public void message(CommandContext context, String... args) {
+        if (!pluginStatus) return;
         if (isBroadcasting) {
             context.getSender().sendMessage("正在广播，请稍后再试");
             return;
@@ -53,9 +55,9 @@ public class Broadcast extends ArisuBotAbstractCompositeCommand {
         context.getSender().sendMessage("信息已保存。请使用broadcast confirm以进行广播。信息预览：");
         context.getSender().sendMessage(mcb.build());
     }
-
     @SubCommand
     public void confirm(CommandContext context) {
+        if (!pluginStatus) return;
         try {
             LOGGER.warning("Start broadcasting. Broadcast bot: " + Objects.requireNonNull(context.getSender().getBot()).getId());
         } catch (NullPointerException e) {
@@ -101,7 +103,50 @@ public class Broadcast extends ArisuBotAbstractCompositeCommand {
     }
     @SubCommand
     public void cancel(CommandContext context) {
+        if (!pluginStatus) return;
         builder = new MessageChainBuilder();
         context.getSender().sendMessage("已清空消息缓存。");
+    }
+
+    /**
+     * Disables this plugin.
+     */
+    @Override
+    public void disablePlugin() {
+        pluginStatus = false;
+    }
+
+    /**
+     * Enables this plugin.
+     */
+    @Override
+    public void enablePlugin() {
+        pluginStatus = true;
+    }
+
+    /**
+     * Get the plugin's status, true if on, false if off.
+     */
+    @Override
+    public boolean pluginStatus() {
+        return pluginStatus;
+    }
+
+    /**
+     * Load method. First time loading.
+     */
+    @Override
+    public void load() {
+        enablePlugin();
+        LOGGER.debug("Broadcast started. ");
+    }
+
+    /**
+     * Shutdown method.
+     */
+    @Override
+    public void shutdown() {
+        disablePlugin();
+        LOGGER.debug("Broadcast shut down. ");
     }
 }

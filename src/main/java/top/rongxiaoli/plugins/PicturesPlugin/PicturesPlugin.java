@@ -13,6 +13,7 @@ import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
 import top.rongxiaoli.ArisuBot;
+import top.rongxiaoli.backend.Commands.ArisuBotAbstractRawCommand;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.io.File;
@@ -22,7 +23,8 @@ import java.util.Objects;
 /**
  * Picture plugin.
  */
-public class PicturesPlugin extends JRawCommand implements PluginBase {
+public class PicturesPlugin extends ArisuBotAbstractRawCommand implements PluginBase {
+    private boolean pluginStatus = false;
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PicturesPlugin.class, "ArisuBot.PicturesPlugin");
     /**
      * The PicturePlugin static instance.
@@ -35,7 +37,7 @@ public class PicturesPlugin extends JRawCommand implements PluginBase {
      * Pictures from lolicon API.
      */
     public PicturesPlugin() {
-        super(ArisuBot.INSTANCE, "setu");
+        super("setu");
         setUsage("[/]setu [keyword1 keyword2 keyword3 ...]");
         setDescription("涩图，使用Lolicon API，可指定关键词");
         setPrefixOptional(true);
@@ -211,6 +213,7 @@ public class PicturesPlugin extends JRawCommand implements PluginBase {
             LOGGER.warning("Directories could not be created. Could be either directory already exists or directory cannot be created. ");
         }
         isPluginRunning = true;
+        enablePlugin();
         LOGGER.debug("Command loaded. ");
     }
 
@@ -221,6 +224,7 @@ public class PicturesPlugin extends JRawCommand implements PluginBase {
     public void reload() {
         LOGGER.debug("Reloading. ");
         disposer = new DelayedDisposer();
+        isPluginRunning = true;
         LOGGER.debug("Reload complete. ");
     }
 
@@ -232,6 +236,7 @@ public class PicturesPlugin extends JRawCommand implements PluginBase {
         LOGGER.debug("shutdown() invoked.");
         disposer.Shutdown();
         isPluginRunning = false;
+        disablePlugin();
         LOGGER.debug("Shut down.");
     }
 
@@ -249,5 +254,29 @@ public class PicturesPlugin extends JRawCommand implements PluginBase {
     @Override
     public void reloadData() {
         LOGGER.debug("Nothing to load. ");
+    }
+
+    /**
+     * Disables this plugin.
+     */
+    @Override
+    public void disablePlugin() {
+        pluginStatus = false;
+    }
+
+    /**
+     * Enables this plugin.
+     */
+    @Override
+    public void enablePlugin() {
+        pluginStatus = true;
+    }
+
+    /**
+     * Get the plugin's status, true if on, false if off.
+     */
+    @Override
+    public boolean pluginStatus() {
+        return pluginStatus;
     }
 }

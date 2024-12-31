@@ -5,6 +5,7 @@ import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 import top.rongxiaoli.plugins.Broadcast.Broadcast;
 import top.rongxiaoli.plugins.DailySign.DailySign;
 import top.rongxiaoli.plugins.DailyFortune.DailyFortune;
+import top.rongxiaoli.plugins.Management.Management;
 import top.rongxiaoli.plugins.PicturesPlugin.PicturesPlugin;
 import top.rongxiaoli.plugins.Ping.Ping;
 import top.rongxiaoli.plugins.PokeReact.PokeReact;
@@ -20,6 +21,24 @@ public class PluginLoader {
     public PluginLoader() {
         this.PluginList = new CopyOnWriteArrayList<>();
     }
+    public void switchOn(String target) {
+        for (PluginBase item :
+                PluginList) {
+            if (item.getClass().getName().contains(target)) {
+                item.enablePlugin();
+                break;
+            }
+        }
+    }
+    public void switchOff(String target) {
+        for (PluginBase item :
+                PluginList) {
+            if (item.getClass().getName().contains(target)) {
+                item.disablePlugin();
+                break;
+            }
+        }
+    }
 
     /**
      * Load method. First time loading. Register all plugins.
@@ -31,8 +50,6 @@ public class PluginLoader {
             e.load();
         }
     }
-
-
     /**
      * Load method. Not first time loading.
      */
@@ -42,7 +59,6 @@ public class PluginLoader {
             e.reload();
         }
     }
-
     /**
      * Unload method.
      */
@@ -70,5 +86,8 @@ public class PluginLoader {
 
         PluginList.add(Broadcast.INSTANCE);
         INSTANCE.registerCommand(Broadcast.INSTANCE, false);
+
+        PluginList.add(Management.INSTANCE);
+        INSTANCE.registerCommand(Management.INSTANCE, false);
     }
 }

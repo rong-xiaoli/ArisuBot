@@ -6,6 +6,7 @@ import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 public abstract class ArisuBotAbstractCompositeCommand extends JCompositeCommand implements PluginBase {
+    private boolean isOn = false;
     private MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(ArisuBotAbstractCompositeCommand.class, "ArisuBot.AbstractCompositeCommand");
     public ArisuBotAbstractCompositeCommand(@NotNull String primaryName, @NotNull String... secondaryNames) {
         super(ArisuBot.INSTANCE, primaryName, secondaryNames);
@@ -17,6 +18,7 @@ public abstract class ArisuBotAbstractCompositeCommand extends JCompositeCommand
     @Override
     public void load() {
         LOGGER.debug("Plugin loading. ");
+        isOn = true;
         LOGGER.debug("Plugin loaded. ");
     }
 
@@ -35,6 +37,7 @@ public abstract class ArisuBotAbstractCompositeCommand extends JCompositeCommand
     @Override
     public void shutdown() {
         LOGGER.debug("Plugin shutting down. ");
+        isOn = false;
         LOGGER.debug("Plugin shut down. ");
     }
 

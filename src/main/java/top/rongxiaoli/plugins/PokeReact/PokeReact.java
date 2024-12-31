@@ -13,6 +13,7 @@ import java.util.Objects;
 public class PokeReact extends ArisuBotAbstractSimpleCommand {
     public static final PokeReact INSTANCE = new PokeReact();
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PokeReact.class, "ArisuBot.PokeReact");
+    private boolean pluginStatus = false;
     public PokeReact() {
         super("poke", "戳一戳");
         setPrefixOptional(false);
@@ -108,5 +109,29 @@ public class PokeReact extends ArisuBotAbstractSimpleCommand {
         LOGGER.verbose("Nothing stored, pass. ");
         PokeReactTextConfig.INSTANCE.reload();
         LOGGER.debug("PokeReact reload done. ");
+    }
+
+    /**
+     * Disables this plugin.
+     */
+    @Override
+    public void disablePlugin() {
+        pluginStatus = false;
+    }
+
+    /**
+     * Enables this plugin.
+     */
+    @Override
+    public void enablePlugin() {
+        pluginStatus = true;
+    }
+
+    /**
+     * Get the plugin's status, true if on, false if off.
+     */
+    @Override
+    public boolean pluginStatus() {
+        return pluginStatus;
     }
 }

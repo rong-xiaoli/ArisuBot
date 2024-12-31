@@ -5,6 +5,7 @@ import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
+import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.util.Calendar;
@@ -14,7 +15,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class DailySign extends JSimpleCommand implements PluginBase {
+public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBase {
+    private boolean pluginStatus = false;
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(4);
     private static int signCount = 0;
     private static final DailySignData DATA = new DailySignData();
@@ -24,11 +26,12 @@ public class DailySign extends JSimpleCommand implements PluginBase {
         signCount = 0;
     }
     public DailySign() {
-        super(ArisuBot.INSTANCE, "sign", "qd");
+        super("sign", "qd");
         setDescription("每日签到");
     }
     @Handler
     public void onCommand(CommandContext context) {
+        if (!pluginStatus) return;
         // Is console calling?
         if (isConsoleCalling(context)) {
             context.getSender().sendMessage("你是0吗？");
@@ -85,6 +88,7 @@ public class DailySign extends JSimpleCommand implements PluginBase {
                 TimeUnit.MINUTES
         );
         LOGGER.verbose("The two scheduler started. ");
+        enablePlugin();
         LOGGER.debug("DailySign loaded. ");
     }
 
@@ -110,6 +114,7 @@ public class DailySign extends JSimpleCommand implements PluginBase {
         LOGGER.verbose("Data shutdown complete. ");
         LOGGER.verbose("No config shutdown needed. ");
         executorService.shutdown();
+        disablePlugin();
         LOGGER.debug("DailySign shut down. ");
     }
 
@@ -134,6 +139,31 @@ public class DailySign extends JSimpleCommand implements PluginBase {
         LOGGER.verbose("No config needed. ");
         LOGGER.debug("DailySign reloaded. ");
     }
+
+    /**
+     * Disables this plugin.
+     */
+    @Override
+    public void disablePlugin() {
+        pluginStatus = false;
+    }
+
+    /**
+     * Enables this plugin.
+     */
+    @Override
+    public void enablePlugin() {
+        pluginStatus = true;
+    }
+
+    /**
+     * Get the plugin's status, true if on, false if off.
+     */
+    @Override
+    public boolean pluginStatus() {
+        return pluginStatus;
+    }
+
     private boolean isConsoleCalling(CommandContext context) {
         long userID = 0, subjectID = 0;
         // From console, return:
