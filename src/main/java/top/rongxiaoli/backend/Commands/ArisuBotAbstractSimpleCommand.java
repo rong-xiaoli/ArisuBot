@@ -5,12 +5,13 @@ import net.mamoe.mirai.console.command.CommandOwner;
 import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
+import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 public abstract class ArisuBotAbstractSimpleCommand extends JSimpleCommand implements PluginBase {
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(ArisuBotAbstractSimpleCommand.class, "ArisuBot.AbstractSimpleCommand");
-    public ArisuBotAbstractSimpleCommand(@NotNull CommandOwner owner, @NotNull String primaryName, @NotNull String... secondaryNames) {
-        super(owner, primaryName, secondaryNames);
+    public ArisuBotAbstractSimpleCommand(@NotNull String primaryName, @NotNull String... secondaryNames) {
+        super(ArisuBot.INSTANCE, primaryName, secondaryNames);
     }
     /**
      * Load method. First time loading.

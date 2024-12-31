@@ -7,7 +7,7 @@ import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 public abstract class ArisuBotAbstractCompositeCommand extends JCompositeCommand implements PluginBase {
     private MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(ArisuBotAbstractCompositeCommand.class, "ArisuBot.AbstractCompositeCommand");
-    public ArisuBotAbstractCompositeCommand(@NotNull String primaryName, @NotNull String[] secondaryNames) {
+    public ArisuBotAbstractCompositeCommand(@NotNull String primaryName, @NotNull String... secondaryNames) {
         super(ArisuBot.INSTANCE, primaryName, secondaryNames);
     }
 
