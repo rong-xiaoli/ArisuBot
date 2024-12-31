@@ -5,6 +5,7 @@ import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 import top.rongxiaoli.plugins.Broadcast.Broadcast;
 import top.rongxiaoli.plugins.DailySign.DailySign;
 import top.rongxiaoli.plugins.DailyFortune.DailyFortune;
+import top.rongxiaoli.plugins.EmergencyStop.EmergencyStop;
 import top.rongxiaoli.plugins.Management.Management;
 import top.rongxiaoli.plugins.PicturesPlugin.PicturesPlugin;
 import top.rongxiaoli.plugins.Ping.Ping;
@@ -89,5 +90,8 @@ public class PluginLoader {
 
         PluginList.add(Management.INSTANCE);
         INSTANCE.registerCommand(Management.INSTANCE, false);
+
+        PluginList.add(EmergencyStop.INSTANCE);
+        INSTANCE.registerCommand(EmergencyStop.INSTANCE, false);
     }
 }
