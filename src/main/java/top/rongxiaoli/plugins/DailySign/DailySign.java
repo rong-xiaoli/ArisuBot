@@ -5,6 +5,7 @@ import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
+import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.util.Calendar;
@@ -14,7 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class DailySign extends JSimpleCommand implements PluginBase {
+public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBase {
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(4);
     private static int signCount = 0;
     private static final DailySignData DATA = new DailySignData();
@@ -24,7 +25,7 @@ public class DailySign extends JSimpleCommand implements PluginBase {
         signCount = 0;
     }
     public DailySign() {
-        super(ArisuBot.INSTANCE, "sign", "qd");
+        super("sign", "qd");
         setDescription("每日签到");
     }
     @Handler

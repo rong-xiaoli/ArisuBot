@@ -13,6 +13,7 @@ import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
 import top.rongxiaoli.ArisuBot;
+import top.rongxiaoli.backend.Commands.ArisuBotAbstractRawCommand;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.io.File;
@@ -22,7 +23,7 @@ import java.util.Objects;
 /**
  * Picture plugin.
  */
-public class PicturesPlugin extends JRawCommand implements PluginBase {
+public class PicturesPlugin extends ArisuBotAbstractRawCommand implements PluginBase {
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PicturesPlugin.class, "ArisuBot.PicturesPlugin");
     /**
      * The PicturePlugin static instance.
@@ -35,7 +36,7 @@ public class PicturesPlugin extends JRawCommand implements PluginBase {
      * Pictures from lolicon API.
      */
     public PicturesPlugin() {
-        super(ArisuBot.INSTANCE, "setu");
+        super("setu");
         setUsage("[/]setu [keyword1 keyword2 keyword3 ...]");
         setDescription("涩图，使用Lolicon API，可指定关键词");
         setPrefixOptional(true);

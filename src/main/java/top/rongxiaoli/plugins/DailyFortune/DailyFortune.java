@@ -7,6 +7,7 @@ import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
+import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.io.File;
@@ -16,12 +17,12 @@ import java.util.GregorianCalendar;
 import java.util.Objects;
 import java.util.Random;
 
-public class DailyFortune extends JSimpleCommand implements PluginBase {
+public class DailyFortune extends ArisuBotAbstractSimpleCommand implements PluginBase {
     public static final DailyFortune INSTANCE = new DailyFortune();
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(DailyFortune.class, "ArisuBot.DailyFortune");
 
     public DailyFortune() {
-        super(ArisuBot.INSTANCE, "fortune", "yunshi", "今日运势", "jrys");
+        super("fortune", "yunshi", "今日运势", "jrys");
         setDescription("今日运势，今天幸运吗？");
         setPrefixOptional(true);
     }
