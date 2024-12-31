@@ -33,4 +33,17 @@ public interface PluginBase extends Command {
      * Manually reload the data. Discard the changes in memory.
      */
     void reloadData();
+    /**
+     * Disables this plugin.
+     */
+    void disablePlugin();
+    /**
+     * Enables this plugin.
+     */
+    void enablePlugin();
+
+    /**
+     * Get the plugin's status, true if on, false if off.
+     */
+    boolean pluginStatus();
 }

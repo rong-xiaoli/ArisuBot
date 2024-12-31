@@ -1,7 +1,6 @@
 package top.rongxiaoli.plugins.DailyFortune;
 
 import net.mamoe.mirai.console.command.CommandSender;
-import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.ExternalResource;
@@ -19,6 +18,7 @@ import java.util.Random;
 
 public class DailyFortune extends ArisuBotAbstractSimpleCommand implements PluginBase {
     public static final DailyFortune INSTANCE = new DailyFortune();
+    private boolean pluginStatus = false;
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(DailyFortune.class, "ArisuBot.DailyFortune");
 
     public DailyFortune() {
@@ -28,6 +28,7 @@ public class DailyFortune extends ArisuBotAbstractSimpleCommand implements Plugi
     }
     @Handler
     public void onCommand(CommandSender sender) {
+        if (!pluginStatus) return;
         long senderID;
         try {
             senderID = Objects.requireNonNull(sender.getUser()).getId();
@@ -128,6 +129,7 @@ public class DailyFortune extends ArisuBotAbstractSimpleCommand implements Plugi
                 (cal.get(Calendar.DAY_OF_YEAR) == 256)) {
             LOGGER.verbose("Happy programmer's day! ");
         }
+        enablePlugin();
         LOGGER.debug("Command loaded. ");
     }
 
@@ -144,7 +146,8 @@ public class DailyFortune extends ArisuBotAbstractSimpleCommand implements Plugi
      */
     @Override
     public void shutdown() {
-        LOGGER.debug("Nothing to do, pass. ");
+        disablePlugin();
+        LOGGER.debug("DailyFortune shut down. ");
     }
 
     /**
@@ -161,5 +164,29 @@ public class DailyFortune extends ArisuBotAbstractSimpleCommand implements Plugi
     @Override
     public void reloadData() {
         LOGGER.debug("Nothing to do, pass. ");
+    }
+
+    /**
+     * Disables this plugin.
+     */
+    @Override
+    public void disablePlugin() {
+        pluginStatus = false;
+    }
+
+    /**
+     * Enables this plugin.
+     */
+    @Override
+    public void enablePlugin() {
+        pluginStatus = true;
+    }
+
+    /**
+     * Get the plugin's status, true if on, false if off.
+     */
+    @Override
+    public boolean pluginStatus() {
+        return pluginStatus;
     }
 }

@@ -4,13 +4,15 @@ import net.mamoe.mirai.console.command.CommandContext;
 import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
+import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
-public class Ping extends JSimpleCommand implements PluginBase {
+public class Ping extends ArisuBotAbstractSimpleCommand implements PluginBase {
+    private boolean pluginStatus = false;
     private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Ping.class, "ArisuBot.Ping");
     public static final Ping INSTANCE = new Ping();
     public Ping() {
-        super(ArisuBot.INSTANCE, "ping");
+        super("ping");
         setPrefixOptional(true);
     }
 
@@ -60,5 +62,29 @@ public class Ping extends JSimpleCommand implements PluginBase {
     @Override
     public void reloadData() {
         LOGGER.debug("Nothing to load. ");
+    }
+
+    /**
+     * Disables this plugin.
+     */
+    @Override
+    public void disablePlugin() {
+        pluginStatus = false;
+    }
+
+    /**
+     * Enables this plugin.
+     */
+    @Override
+    public void enablePlugin() {
+        pluginStatus = true;
+    }
+
+    /**
+     * Get the plugin's status, true if on, false if off.
+     */
+    @Override
+    public boolean pluginStatus() {
+        return pluginStatus;
     }
 }

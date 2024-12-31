@@ -24,6 +24,7 @@ import java.util.Objects;
  * Picture plugin.
  */
 public class PicturesPlugin extends ArisuBotAbstractRawCommand implements PluginBase {
+    private boolean pluginStatus = false;
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PicturesPlugin.class, "ArisuBot.PicturesPlugin");
     /**
      * The PicturePlugin static instance.
@@ -212,6 +213,7 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
             LOGGER.warning("Directories could not be created. Could be either directory already exists or directory cannot be created. ");
         }
         isPluginRunning = true;
+        enablePlugin();
         LOGGER.debug("Command loaded. ");
     }
 
@@ -222,6 +224,7 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
     public void reload() {
         LOGGER.debug("Reloading. ");
         disposer = new DelayedDisposer();
+        isPluginRunning = true;
         LOGGER.debug("Reload complete. ");
     }
 
@@ -233,6 +236,7 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
         LOGGER.debug("shutdown() invoked.");
         disposer.Shutdown();
         isPluginRunning = false;
+        disablePlugin();
         LOGGER.debug("Shut down.");
     }
 
@@ -250,5 +254,29 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
     @Override
     public void reloadData() {
         LOGGER.debug("Nothing to load. ");
+    }
+
+    /**
+     * Disables this plugin.
+     */
+    @Override
+    public void disablePlugin() {
+        pluginStatus = false;
+    }
+
+    /**
+     * Enables this plugin.
+     */
+    @Override
+    public void enablePlugin() {
+        pluginStatus = true;
+    }
+
+    /**
+     * Get the plugin's status, true if on, false if off.
+     */
+    @Override
+    public boolean pluginStatus() {
+        return pluginStatus;
     }
 }
