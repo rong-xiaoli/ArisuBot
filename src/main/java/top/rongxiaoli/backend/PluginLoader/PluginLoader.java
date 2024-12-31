@@ -2,6 +2,7 @@ package top.rongxiaoli.backend.PluginLoader;
 
 import net.mamoe.mirai.console.command.CommandManager;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
+import top.rongxiaoli.plugins.Broadcast.Broadcast;
 import top.rongxiaoli.plugins.DailySign.DailySign;
 import top.rongxiaoli.plugins.DailyFortune.DailyFortune;
 import top.rongxiaoli.plugins.PicturesPlugin.PicturesPlugin;
@@ -66,5 +67,8 @@ public class PluginLoader {
 
         PluginList.add(PokeReact.INSTANCE);
         INSTANCE.registerCommand(PokeReact.INSTANCE, false);
+
+        PluginList.add(Broadcast.INSTANCE);
+        INSTANCE.registerCommand(Broadcast.INSTANCE, false);
     }
 }

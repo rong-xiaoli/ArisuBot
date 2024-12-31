@@ -14,7 +14,7 @@ public class PokeReact extends ArisuBotAbstractSimpleCommand {
     public static final PokeReact INSTANCE = new PokeReact();
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PokeReact.class, "ArisuBot.PokeReact");
     public PokeReact() {
-        super(ArisuBot.INSTANCE, "poke", "戳一戳");
+        super("poke", "戳一戳");
         setPrefixOptional(false);
     }
     @Override
@@ -23,7 +23,6 @@ public class PokeReact extends ArisuBotAbstractSimpleCommand {
         LOGGER.debug("PokeReact loaded. ");
     }
     @Handler
-    @Override
     public void onCommand(CommandContext context) {
         if (isConsoleCalling(context)) return;
         int branch;
