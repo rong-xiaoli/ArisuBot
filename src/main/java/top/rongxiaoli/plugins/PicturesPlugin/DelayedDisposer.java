@@ -131,18 +131,21 @@ public class DelayedDisposer {
         @Override
         public void run() {
             do {
-                isConsuming = true;
-                if (!ThreadUtil.safeSleep(500)) {
-                    LOGGER.warning("Sleep is interrupted. ");
-                    isConsuming = false;
-                    return;
-                }
-                CoolingUser u;
-                while ((u = disposer.coolingQueue.poll()) != null) {
-                    LOGGER.verbose("Ejecting delayed element: " + u.user);
-                    disposer.userHashSet.remove(u.user);
-                }
+                mainCycle();
             } while (!isShuttingDown);
+        }
+        private void mainCycle() {
+            isConsuming = true;
+            if (!ThreadUtil.safeSleep(500)) {
+                LOGGER.warning("Sleep is interrupted. ");
+                isConsuming = false;
+                return;
+            }
+            CoolingUser u;
+            while ((u = disposer.coolingQueue.poll()) != null) {
+                LOGGER.verbose("Ejecting delayed element: " + u.user);
+                disposer.userHashSet.remove(u.user);
+            }
         }
     }
 }
