@@ -7,6 +7,7 @@ import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 public abstract class ArisuBotAbstractRawCommand extends JRawCommand implements PluginBase {
+    private boolean isOn = false;
     private MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(ArisuBotAbstractRawCommand.class, "ArisuBot.AbstractCompositeCommand");
     public ArisuBotAbstractRawCommand(@NotNull String primaryName, @NotNull String... secondaryNames) {
         super(ArisuBot.INSTANCE, primaryName, secondaryNames);
@@ -18,6 +19,7 @@ public abstract class ArisuBotAbstractRawCommand extends JRawCommand implements 
     @Override
     public void load() {
         LOGGER.debug("Plugin loading. ");
+        isOn = true;
         LOGGER.debug("Plugin loaded. ");
     }
 
@@ -36,6 +38,7 @@ public abstract class ArisuBotAbstractRawCommand extends JRawCommand implements 
     @Override
     public void shutdown() {
         LOGGER.debug("Plugin shutting down. ");
+        isOn = false;
         LOGGER.debug("Plugin shut down. ");
     }
 
