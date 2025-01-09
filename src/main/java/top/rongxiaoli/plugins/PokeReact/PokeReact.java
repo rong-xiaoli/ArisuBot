@@ -17,6 +17,7 @@ public class PokeReact extends ArisuBotAbstractSimpleCommand {
     public PokeReact() {
         super("poke", "戳一戳");
         setPrefixOptional(false);
+        setDescription("戳一戳，这个命令可以让电脑端也可以对机器人使用戳一戳");
     }
     @Override
     public void load() {

@@ -13,6 +13,7 @@ public class Ping extends ArisuBotAbstractSimpleCommand implements PluginBase {
     public static final Ping INSTANCE = new Ping();
     public Ping() {
         super("ping");
+        setDescription("Ping, 返回Pong! ");
         setPrefixOptional(true);
     }
 

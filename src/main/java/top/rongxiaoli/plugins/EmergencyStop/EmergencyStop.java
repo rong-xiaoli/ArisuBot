@@ -1,24 +1,24 @@
 package top.rongxiaoli.plugins.EmergencyStop;
 
 import net.mamoe.mirai.console.command.CommandContext;
-import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.message.data.QuoteReply;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
-import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
+import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
 import top.rongxiaoli.backend.interfaces.Plugin;
 
 @Plugin(name = "EmergencyStop")
-public class EmergencyStop extends ArisuBotAbstractSimpleCommand {
+public class EmergencyStop extends ArisuBotAbstractCompositeCommand {
     private boolean isStopped = false;
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(EmergencyStop.class, "ArisuBot.EmergencyStop");
     public static final EmergencyStop INSTANCE = new EmergencyStop();
     public EmergencyStop() {
         super("EmergencyStop", "停止", "estop");
+        setDescription("紧急停止。后面加一个字符串可以查看状态。");
     }
-    @Handler
-    public void onCommand(CommandContext context) {
+    @SubCommand
+    public void switchStatus(CommandContext context) {
         if (isStopped) {
             context.getSender().sendMessage("正在关闭紧急停止");
             ArisuBot.LOADER.reload();
@@ -29,11 +29,8 @@ public class EmergencyStop extends ArisuBotAbstractSimpleCommand {
         ArisuBot.LOADER.shutdown();
         isStopped =! isStopped;
     }
-    @Handler
-    public void onCommand(CommandContext context, String anything) {
-        if (anything.isEmpty()) {
-            return;
-        }
+    @SubCommand
+    public void status(CommandContext context) {
         MessageChainBuilder mcb = new MessageChainBuilder();
         mcb.add(new QuoteReply(context.getOriginalMessage()));
         mcb.add("当前状态：" + isStopped);
