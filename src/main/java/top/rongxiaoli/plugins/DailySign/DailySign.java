@@ -43,8 +43,6 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         lastSign.setTimeInMillis(lastSignMillis);
         int signCombo = DATA.querySignCombo(userID);
         GregorianCalendar gCalendar = ((GregorianCalendar) Calendar.getInstance());
-        LOGGER.verbose(String.valueOf(gCalendar.get(Calendar.DAY_OF_YEAR)));
-        LOGGER.verbose(String.valueOf(lastSign.get(Calendar.DAY_OF_YEAR)));
         if (gCalendar.get(Calendar.DAY_OF_YEAR) == lastSign.get(Calendar.DAY_OF_YEAR)) {
             mainBuilder.append("你已经签过到了哦~\n");
             mainBuilder.append(DailySignString.GetRandomString());
