@@ -19,10 +19,10 @@ import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Objects;
-@Plugin(name = "PicturesPlugin")
 /**
  * Picture plugin.
  */
+@Plugin(name = "PicturesPlugin")
 public class PicturesPlugin extends ArisuBotAbstractRawCommand implements PluginBase {
     private boolean pluginStatus = false;
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PicturesPlugin.class, "ArisuBot.PicturesPlugin");
@@ -48,9 +48,10 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
      */
     @Override
     public void onCommand(@NotNull CommandContext context, @NotNull MessageChain args) {
+        if (!pluginStatus) return;
         // Plugin running?
         if (!isPluginRunning) {
-            context.getSender().sendMessage("已禁用该插件");
+            context.getSender().sendMessage("该插件目前不可用");
             return;
         }
         long userID = 0, subjectID = 0;

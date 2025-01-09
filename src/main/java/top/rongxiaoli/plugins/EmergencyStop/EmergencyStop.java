@@ -1,6 +1,9 @@
 package top.rongxiaoli.plugins.EmergencyStop;
 
 import net.mamoe.mirai.console.command.CommandContext;
+import net.mamoe.mirai.message.data.At;
+import net.mamoe.mirai.message.data.MessageChainBuilder;
+import net.mamoe.mirai.message.data.QuoteReply;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
@@ -16,14 +19,25 @@ public class EmergencyStop extends ArisuBotAbstractSimpleCommand {
     }
     @Handler
     public void onCommand(CommandContext context) {
-        context.getSender().sendMessage("正在紧急停止");
         if (isStopped) {
+            context.getSender().sendMessage("正在关闭紧急停止");
             ArisuBot.LOADER.reload();
+            isStopped =! isStopped;
             return;
         }
+        context.getSender().sendMessage("正在紧急停止");
         ArisuBot.LOADER.shutdown();
+        isStopped =! isStopped;
     }
-
+    @Handler
+    public void onCommand(CommandContext context, String anything) {
+        if (anything.isEmpty()) {
+            return;
+        }
+        MessageChainBuilder mcb = new MessageChainBuilder();
+        mcb.add(new QuoteReply(context.getOriginalMessage()));
+        mcb.add("当前状态：" + isStopped);
+    }
     @Override
     public void load() {
         LOGGER.debug("EmergencyStop loaded. ");

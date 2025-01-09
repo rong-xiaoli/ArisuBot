@@ -1,5 +1,6 @@
 package top.rongxiaoli.backend.PluginLoader;
 
+import net.mamoe.mirai.console.command.Command;
 import net.mamoe.mirai.console.command.CommandManager;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
@@ -100,11 +101,14 @@ public class PluginLoader {
                 Field f = clazz.getDeclaredField("INSTANCE");
                 f.setAccessible(true);
                 PluginList.add((PluginBase) f.get(null));
+                INSTANCE.registerCommand((Command) f.get(null), false);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 LOGGER.error("Cannot load class because field \"INSTANCE\" not found. Exception below: ");
                 LOGGER.error(e);
                 LOGGER.warning("Detail below: ");
                 throw new RuntimeException(e);
+            } catch (ClassCastException e) {
+                LOGGER.warning("Cannot cast " + clazz.getName() + " to " + Command.class.getName());
             }
         }
         for (PluginBase e :
