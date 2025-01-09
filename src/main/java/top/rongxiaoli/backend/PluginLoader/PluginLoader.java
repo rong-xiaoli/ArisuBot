@@ -1,26 +1,19 @@
 package top.rongxiaoli.backend.PluginLoader;
 
 import net.mamoe.mirai.console.command.CommandManager;
+import net.mamoe.mirai.utils.MiraiLogger;
+import top.rongxiaoli.ArisuBot;
+import top.rongxiaoli.backend.Utils.ClassUtil;
+import top.rongxiaoli.backend.interfaces.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
-import top.rongxiaoli.plugins.Broadcast.Broadcast;
-import top.rongxiaoli.plugins.DailySign.DailySign;
-import top.rongxiaoli.plugins.DailyFortune.DailyFortune;
-import top.rongxiaoli.plugins.EmergencyStop.EmergencyStop;
-import top.rongxiaoli.plugins.Management.Management;
-import top.rongxiaoli.plugins.PicturesPlugin.PicturesPlugin;
-import top.rongxiaoli.plugins.Ping.Ping;
-import top.rongxiaoli.plugins.PokeReact.PokeReact;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PluginLoader {
+    private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PluginLoader.class, "ArisuBot.PluginLoader");
     /**
      * Plugin list.
      */
@@ -78,29 +71,46 @@ public class PluginLoader {
             e.shutdown();
         }
     }
+
+    /**
+     * This plugin is to add all plugins marked with Annotation {@code Plugin} into plugin list.
+     */
     private void addPlugins() {
-        PluginList.add(PicturesPlugin.INSTANCE);
-        INSTANCE.registerCommand(PicturesPlugin.INSTANCE, false);
+        List<Package> checklist = new ArrayList<>();
 
-        PluginList.add(Ping.INSTANCE);
-        INSTANCE.registerCommand(Ping.INSTANCE, false);
-      
-        PluginList.add(DailySign.INSTANCE);
-        INSTANCE.registerCommand(DailySign.INSTANCE, false);
-      
-        PluginList.add(DailyFortune.INSTANCE);
-        INSTANCE.registerCommand(DailyFortune.INSTANCE, false);
+        // Package scan list start.
+        checklist.add(ArisuBot.class.getPackage());
+        // Package scan list end.
 
-        PluginList.add(PokeReact.INSTANCE);
-        INSTANCE.registerCommand(PokeReact.INSTANCE, false);
-
-        PluginList.add(Broadcast.INSTANCE);
-        INSTANCE.registerCommand(Broadcast.INSTANCE, false);
-
-        PluginList.add(Management.INSTANCE);
-        INSTANCE.registerCommand(Management.INSTANCE, false);
-
-        PluginList.add(EmergencyStop.INSTANCE);
-        INSTANCE.registerCommand(EmergencyStop.INSTANCE, false);
+        LOGGER.debug("Loading classes from packages below: ");
+        List<Class<?>> reflectClasses = new ArrayList<>();
+        for (Package pack :
+                checklist) {
+            LOGGER.debug(pack.toString());
+            reflectClasses.addAll(ClassUtil.scan(pack, ArisuBot.GetPluginClassLoader()));
+        }
+        LOGGER.verbose("Scanning " + reflectClasses.size() + " classes for plugins. ");
+        // Process and add plugins to PluginList.
+        for (Class<?> clazz :
+                reflectClasses) {
+            if (!clazz.isAnnotationPresent(Plugin.class)) {
+                continue;
+            }
+            try {
+                Field f = clazz.getDeclaredField("INSTANCE");
+                f.setAccessible(true);
+                PluginList.add((PluginBase) f.get(null));
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                LOGGER.error("Cannot load class because field \"INSTANCE\" not found. Exception below: ");
+                LOGGER.error(e);
+                LOGGER.warning("Detail below: ");
+                throw new RuntimeException(e);
+            }
+        }
+        for (PluginBase e :
+                PluginList) {
+            LOGGER.verbose("Found plugin: " + e.getClass().getName());
+        }
+        ArisuBot.INSTANCE.getLogger().verbose("Found " + PluginList.size() + " plugins. ");
     }
 }

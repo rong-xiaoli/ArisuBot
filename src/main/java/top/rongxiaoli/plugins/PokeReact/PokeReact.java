@@ -3,13 +3,13 @@ package top.rongxiaoli.plugins.PokeReact;
 import net.mamoe.mirai.console.command.CommandContext;
 import net.mamoe.mirai.event.events.NudgeEvent;
 import net.mamoe.mirai.utils.MiraiLogger;
-import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
+import top.rongxiaoli.backend.interfaces.Plugin;
 import top.rongxiaoli.plugins.PokeReact.backend.PokeReactTextConfig;
 
 import java.security.SecureRandom;
 import java.util.Objects;
-
+@Plugin(name = "PokeReact")
 public class PokeReact extends ArisuBotAbstractSimpleCommand {
     public static final PokeReact INSTANCE = new PokeReact();
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PokeReact.class, "ArisuBot.PokeReact");

@@ -24,7 +24,7 @@ public final class ArisuBot extends JavaPlugin {
         super(new JvmPluginDescriptionBuilder("top.rongxiaoli.ArisuBot", "0.0.0")
                 .name("ArisuBot")
                 .info("REBORN, even better. ")
-                .author("rong-xiaoli")
+                .author("容小狸")
                 .build());
     }
 
@@ -33,7 +33,6 @@ public final class ArisuBot extends JavaPlugin {
      */
     @Override
     public void onLoad(@NotNull PluginComponentStorage $this$onLoad) {
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
         getLogger().debug("Loading ArisuBot plugin config...");
         CONFIG.load();
         getLogger().debug("Loading ArisuBot plugin data...");
@@ -68,5 +67,8 @@ public final class ArisuBot extends JavaPlugin {
     }
     public static Path GetDataPath() {
       return INSTANCE.getDataFolderPath();
+    }
+    public static ClassLoader GetPluginClassLoader() {
+        return INSTANCE.getJvmPluginClasspath().getPluginClassLoader();
     }
 }

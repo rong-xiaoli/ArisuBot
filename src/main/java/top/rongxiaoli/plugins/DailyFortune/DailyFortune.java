@@ -7,6 +7,7 @@ import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
+import top.rongxiaoli.backend.interfaces.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.io.File;
@@ -15,7 +16,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 import java.util.Random;
-
+@Plugin(name = "DailyFortune")
 public class DailyFortune extends ArisuBotAbstractSimpleCommand implements PluginBase {
     public static final DailyFortune INSTANCE = new DailyFortune();
     private boolean pluginStatus = false;

@@ -4,20 +4,14 @@ import net.mamoe.mirai.console.command.CommandContext;
 import net.mamoe.mirai.contact.ContactList;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
-import net.mamoe.mirai.message.data.ForwardMessageBuilder;
-import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
-import net.mamoe.mirai.message.data.SingleMessage;
 import net.mamoe.mirai.utils.MiraiLogger;
-import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
-import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
+import top.rongxiaoli.backend.interfaces.Plugin;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-
+@Plugin(name = "Broadcast")
 public class Broadcast extends ArisuBotAbstractCompositeCommand {
     private boolean pluginStatus = false;
     private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Broadcast.class, "ArisuBot.Broadcast");
