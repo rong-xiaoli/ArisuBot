@@ -9,16 +9,19 @@ import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 public abstract class ArisuBotAbstractSimpleCommand extends JSimpleCommand implements PluginBase {
+    private boolean isOn;
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(ArisuBotAbstractSimpleCommand.class, "ArisuBot.AbstractSimpleCommand");
     public ArisuBotAbstractSimpleCommand(@NotNull String primaryName, @NotNull String... secondaryNames) {
         super(ArisuBot.INSTANCE, primaryName, secondaryNames);
     }
+
     /**
      * Load method. First time loading.
      */
     @Override
     public void load() {
         LOGGER.debug("Plugin loading. ");
+        isOn = true;
         LOGGER.debug("Plugin loaded. ");
     }
 
@@ -37,6 +40,7 @@ public abstract class ArisuBotAbstractSimpleCommand extends JSimpleCommand imple
     @Override
     public void shutdown() {
         LOGGER.debug("Plugin shutting down. ");
+        isOn = false;
         LOGGER.debug("Plugin shut down. ");
     }
 

@@ -1,11 +1,10 @@
 package top.rongxiaoli.plugins.DailySign;
 
 import net.mamoe.mirai.console.command.CommandContext;
-import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.MiraiLogger;
-import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
+import top.rongxiaoli.backend.interfaces.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.util.Calendar;
@@ -14,7 +13,7 @@ import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
+@Plugin(name = "DailySign")
 public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBase {
     private boolean pluginStatus = false;
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(4);

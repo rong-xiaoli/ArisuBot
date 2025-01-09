@@ -1,12 +1,12 @@
 package top.rongxiaoli.plugins.Ping;
 
 import net.mamoe.mirai.console.command.CommandContext;
-import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
+import top.rongxiaoli.backend.interfaces.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
-
+@Plugin(name = "Ping")
 public class Ping extends ArisuBotAbstractSimpleCommand implements PluginBase {
     private boolean pluginStatus = false;
     private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Ping.class, "ArisuBot.Ping");
@@ -18,6 +18,7 @@ public class Ping extends ArisuBotAbstractSimpleCommand implements PluginBase {
 
     @Handler
     public void run(CommandContext context) {
+        if (!pluginStatus) return;
         if (!ArisuBot.PluginRunning) {
             return;
         }
@@ -29,6 +30,7 @@ public class Ping extends ArisuBotAbstractSimpleCommand implements PluginBase {
      */
     @Override
     public void load() {
+        enablePlugin();
         LOGGER.debug("Command loaded. ");
     }
 
@@ -45,6 +47,7 @@ public class Ping extends ArisuBotAbstractSimpleCommand implements PluginBase {
      */
     @Override
     public void shutdown() {
+        disablePlugin();
         LOGGER.debug("shutdown() invoked. Nothing special, pass. ");
     }
 

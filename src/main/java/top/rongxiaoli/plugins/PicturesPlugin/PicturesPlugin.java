@@ -7,22 +7,22 @@ import cn.hutool.http.HttpException;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import net.mamoe.mirai.console.command.CommandContext;
-import net.mamoe.mirai.console.command.java.JRawCommand;
 import net.mamoe.mirai.message.data.*;
 import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractRawCommand;
+import top.rongxiaoli.backend.interfaces.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Objects;
-
 /**
  * Picture plugin.
  */
+@Plugin(name = "PicturesPlugin")
 public class PicturesPlugin extends ArisuBotAbstractRawCommand implements PluginBase {
     private boolean pluginStatus = false;
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PicturesPlugin.class, "ArisuBot.PicturesPlugin");
@@ -48,9 +48,10 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
      */
     @Override
     public void onCommand(@NotNull CommandContext context, @NotNull MessageChain args) {
+        if (!pluginStatus) return;
         // Plugin running?
         if (!isPluginRunning) {
-            context.getSender().sendMessage("已禁用该插件");
+            context.getSender().sendMessage("该插件目前不可用");
             return;
         }
         long userID = 0, subjectID = 0;

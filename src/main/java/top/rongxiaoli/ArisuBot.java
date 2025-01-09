@@ -24,7 +24,7 @@ public final class ArisuBot extends JavaPlugin {
         super(new JvmPluginDescriptionBuilder("top.rongxiaoli.ArisuBot", "0.0.0")
                 .name("ArisuBot")
                 .info("REBORN, even better. ")
-                .author("rong-xiaoli")
+                .author("容小狸")
                 .build());
     }
 
@@ -67,5 +67,8 @@ public final class ArisuBot extends JavaPlugin {
     }
     public static Path GetDataPath() {
       return INSTANCE.getDataFolderPath();
+    }
+    public static ClassLoader GetPluginClassLoader() {
+        return INSTANCE.getJvmPluginClasspath().getPluginClassLoader();
     }
 }

@@ -2,9 +2,6 @@ package top.rongxiaoli.plugins.PokeReact;
 
 import net.mamoe.mirai.console.command.CommandContext;
 import net.mamoe.mirai.event.events.NudgeEvent;
-import net.mamoe.mirai.message.action.BotNudge;
-import net.mamoe.mirai.message.action.Nudge;
-import net.mamoe.mirai.message.action.UserNudge;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.plugins.PokeReact.backend.PokeReactTextConfig;
 

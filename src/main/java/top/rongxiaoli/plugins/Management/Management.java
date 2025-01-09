@@ -2,11 +2,11 @@ package top.rongxiaoli.plugins.Management;
 
 import net.mamoe.mirai.console.command.CommandContext;
 import net.mamoe.mirai.utils.MiraiLogger;
-import org.jetbrains.annotations.NotNull;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
-import top.rongxiaoli.backend.PluginLoader.PluginLoader;
+import top.rongxiaoli.backend.interfaces.Plugin;
 
+@Plugin(name = "Management")
 public class Management extends ArisuBotAbstractCompositeCommand {
     public static Management INSTANCE = new Management();
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Management.class, "ArisuBot.Management");
@@ -16,11 +16,11 @@ public class Management extends ArisuBotAbstractCompositeCommand {
     }
     @SubCommand
     public void enable(CommandContext context, String targetPlugin) {
-        ArisuBot.LOADER.switchOn(targetPlugin);
+        ArisuBot.LOADER.reload(targetPlugin);
     }
     @SubCommand
     public void disable(CommandContext context, String targetPlugin) {
-        ArisuBot.LOADER.switchOff(targetPlugin);
+        ArisuBot.LOADER.shutdown(targetPlugin);
     }
     @Override
     public void load() {
