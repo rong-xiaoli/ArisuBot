@@ -10,7 +10,7 @@ import java.util.Random;
 import java.util.Set;
 
 public class PokeBack {
-    MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PokeBack.class, "ArisuBot.PokeReact.PokeBack");
+    private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PokeBack.class, "ArisuBot.PokeReact.PokeBack");
     private static String getRandomString() {
         String out;
         Set<String> TextSet = PokeReactTextConfig.INSTANCE.ValuePokeBackText.get();

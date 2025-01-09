@@ -28,7 +28,7 @@ public class PokeReactTextConfig extends JavaAutoSavePluginConfig implements Plu
                 }
             }
     );
-    public Value<Set<String>> ValueSayRandomText = typedValue("PokeBackText",
+    public Value<Set<String>> ValueSayRandomText = typedValue("SayRandomText",
             createKType(Set.class,
                     createKType(String.class)
             ),

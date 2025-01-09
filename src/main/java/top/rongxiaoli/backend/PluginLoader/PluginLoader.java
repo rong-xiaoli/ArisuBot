@@ -103,11 +103,14 @@ public class PluginLoader {
                 PluginList.add((PluginBase) f.get(null));
                 INSTANCE.registerCommand((Command) f.get(null), false);
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                LOGGER.error("Cannot load class because field \"INSTANCE\" not found. Exception below: ");
-                LOGGER.error(e);
-                LOGGER.warning("Detail below: ");
-                throw new RuntimeException(e);
+                LOGGER.error("Cannot load class " + clazz.getName() + " because field \"INSTANCE\" was not found or is inaccessible.");
+                LOGGER.error("Exception details: ", e);
+                // Continue loading other classes instead of throwing an exception
+                continue;
             } catch (ClassCastException e) {
+                LOGGER.warning("Cannot cast " + clazz.getName() + " to " + Command.class.getName());
+                // Continue loading other classes
+                continue;
                 LOGGER.warning("Cannot cast " + clazz.getName() + " to " + Command.class.getName());
             }
         }

@@ -16,11 +16,21 @@ public class Management extends ArisuBotAbstractCompositeCommand {
     }
     @SubCommand
     public void enable(CommandContext context, String targetPlugin) {
+        if (targetPlugin == null || targetPlugin.isEmpty()) {
+            context.getSender().sendMessage("Plugin name cannot be empty");
+            return;
+        }
         ArisuBot.LOADER.reload(targetPlugin);
+        context.getSender().sendMessage("Plugin " + targetPlugin + " enabled successfully");
     }
     @SubCommand
     public void disable(CommandContext context, String targetPlugin) {
+        if (targetPlugin == null || targetPlugin.isEmpty()) {
+            context.getSender().sendMessage("Plugin name cannot be empty");
+            return;
+        }
         ArisuBot.LOADER.shutdown(targetPlugin);
+        context.getSender().sendMessage("Plugin " + targetPlugin + " disabled successfully");
     }
     @Override
     public void load() {

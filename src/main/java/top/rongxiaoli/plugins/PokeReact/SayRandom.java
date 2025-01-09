@@ -15,8 +15,7 @@ public class SayRandom {
         Set<String> TextSet = PokeReactTextConfig.INSTANCE.ValueSayRandomText.get();
         String[] preset = TextSet.toArray(new String[0]);
         if (preset.length == 0) return "别戳啦";
-        Random random = new Random(System.currentTimeMillis());
-        out = preset[random.nextInt(preset.length)];
+        out = preset[new Random().nextInt(preset.length)];
         return out;
     }
     public void React(CommandContext context) {

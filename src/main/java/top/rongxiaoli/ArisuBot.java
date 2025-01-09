@@ -19,7 +19,7 @@ public final class ArisuBot extends JavaPlugin {
     public static final ConfigLoader CONFIG = new ConfigLoader();
     public static final DataLoader DATA = new DataLoader();
     public static boolean PluginRunning = false;
-
+    public static volatile boolean PluginRunning = false;
     private ArisuBot() {
         super(new JvmPluginDescriptionBuilder("top.rongxiaoli.ArisuBot", "0.0.0")
                 .name("ArisuBot")

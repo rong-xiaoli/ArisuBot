@@ -16,8 +16,8 @@ public class Broadcast extends ArisuBotAbstractCompositeCommand {
     private boolean pluginStatus = false;
     private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Broadcast.class, "ArisuBot.Broadcast");
     public static Broadcast INSTANCE = new Broadcast();
-    public static MessageChainBuilder builder = new MessageChainBuilder();
-    public static boolean isBroadcasting = false;
+    private final MessageChainBuilder builder = new MessageChainBuilder();
+    private volatile boolean isBroadcasting = false;
     public Broadcast() {
         super("broadcast", "广播");
         setDescription("向所有人广播消息，请注意一定要配合LuckPerms进行权限管理，该功能可能会造成滥用！");

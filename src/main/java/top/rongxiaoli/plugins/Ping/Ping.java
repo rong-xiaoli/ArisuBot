@@ -8,7 +8,7 @@ import top.rongxiaoli.backend.interfaces.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 @Plugin(name = "Ping")
 public class Ping extends ArisuBotAbstractSimpleCommand implements PluginBase {
-    private boolean pluginStatus = false;
+    private volatile boolean pluginStatus = false;
     private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Ping.class, "ArisuBot.Ping");
     public static final Ping INSTANCE = new Ping();
     public Ping() {

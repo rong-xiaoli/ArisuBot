@@ -9,7 +9,7 @@ public class UserJudgeUtils {
     public UserJudgeUtils(MiraiLogger l) {
         LOGGER = l;
     }
-    MiraiLogger LOGGER;
+    private final MiraiLogger LOGGER;
     public boolean isConsoleCalling(CommandContext context) {
         long userID = 0, subjectID = 0;
         // From console, return:

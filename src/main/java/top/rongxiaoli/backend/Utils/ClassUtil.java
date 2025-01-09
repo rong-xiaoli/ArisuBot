@@ -63,9 +63,7 @@ public class ClassUtil {
         }
     }
     private static void getClassByJarFile(URL url, String packageDirName, String packageName, boolean recursive, List<Class<?>> classes) {
-        JarFile jar;
-        try {
-            jar = ((JarURLConnection) url.openConnection()).getJarFile();
+        try (JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile()) {
             Enumeration<JarEntry> entries = jar.entries();
             while (entries.hasMoreElements()) {
                 JarEntry entry = entries.nextElement();
