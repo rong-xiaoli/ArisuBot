@@ -32,6 +32,40 @@ LuckPerms在MC圈子里是一个非常热门的权限管理器，以简洁易懂
 ## 共同管理和贡献者
 
 <!-- readme: collaborators,contributors -start -->
+<table>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/rong-xiaoli">
+                    <img src="https://avatars.githubusercontent.com/u/58361774?v=4" width="100;" alt="rong-xiaoli"/>
+                    <br />
+                    <sub><b>容小狸</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/ADU20281028">
+                    <img src="https://avatars.githubusercontent.com/u/68726099?v=4" width="100;" alt="ADU20281028"/>
+                    <br />
+                    <sub><b>ADU20281028</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/Moshonne">
+                    <img src="https://avatars.githubusercontent.com/u/134853150?v=4" width="100;" alt="Moshonne"/>
+                    <br />
+                    <sub><b>Moshonne</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/fossabot">
+                    <img src="https://avatars.githubusercontent.com/u/29791463?v=4" width="100;" alt="fossabot"/>
+                    <br />
+                    <sub><b>fossabot</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
+</table>
 <!-- readme: collaborators,contributors -end -->
 
 Repo stats
