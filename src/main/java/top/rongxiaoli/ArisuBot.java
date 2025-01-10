@@ -55,7 +55,12 @@ public final class ArisuBot extends JavaPlugin {
         LOADER.load();
         getLogger().verbose("Plugin load complete. ");
         getLogger().verbose("Registering listener host. ");
-        GlobalEventChannel.INSTANCE.registerListenerHost(new EventListener());
+        try {
+            GlobalEventChannel.INSTANCE.registerListenerHost(new EventListener());
+        } catch (Exception e) {
+            getLogger().error("Failed to register event listener", e);
+            throw e;
+        }
         getLogger().debug("Initialization complete. ");
         ArisuBot.PluginRunning = true;
     }
@@ -63,10 +68,18 @@ public final class ArisuBot extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().debug("Start disabling process. ");
-        DATA.shutdown();
-        getLogger().debug("Data saved. ");
-        CONFIG.shutdown();
-        getLogger().debug("Config saved. ");
+        try {
+            DATA.shutdown();
+            getLogger().debug("Data saved. ");
+        } catch (Exception e) {
+            getLogger().error("Failed to shutdown data: " + e.getMessage(), e);
+        }
+        try {
+            CONFIG.shutdown();
+            getLogger().debug("Config saved. ");
+        } catch (Exception e) {
+            getLogger().error("Failed to shutdown config: " + e.getMessage(), e);
+        }
         LOADER.shutdown();
         getLogger().debug("Shutdown complete. ");
     }
