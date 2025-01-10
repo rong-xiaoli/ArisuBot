@@ -52,22 +52,21 @@ public class Management extends ArisuBotAbstractCompositeCommand {
 
     /**
      * Disables this plugin.
+     * This plugin should not be disabled as it is a management plugin.
      */
     @Override
-    public void disablePlugin() {
-        return;
-    }
+    public void disablePlugin() {}
 
     /**
      * Enables this plugin.
+     * This plugin should not be disabled as it is a management plugin.
      */
     @Override
-    public void enablePlugin() {
-        return;
-    }
+    public void enablePlugin() {}
 
     /**
      * Get the plugin's status, true if on, false if off.
+     * This plugin should not be disabled as it is a management plugin.
      */
     @Override
     public boolean pluginStatus() {
