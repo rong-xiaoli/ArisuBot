@@ -2,10 +2,12 @@ name: Auto adding contributors when version bumps.
 
 # Controls when the workflow will run
 on:
+  workflow_dispatch:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
     branches:
       - main
+
 jobs:
   contrib-readme-job:
     runs-on: ubuntu-latest
