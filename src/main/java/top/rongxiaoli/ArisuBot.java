@@ -1,5 +1,8 @@
 package top.rongxiaoli;
 
+import cn.hutool.Hutool;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.TimeInterval;
 import net.mamoe.mirai.console.extension.PluginComponentStorage;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
@@ -26,12 +29,14 @@ public final class ArisuBot extends JavaPlugin {
                 .author("容小狸")
                 .build());
     }
+    private static TimeInterval interval;
 
     /**
      * @param $this$onLoad This parameter is not used. 
      */
     @Override
     public void onLoad(@NotNull PluginComponentStorage $this$onLoad) {
+        interval = DateUtil.timer();
         getLogger().debug("Loading ArisuBot plugin config...");
         try {
             CONFIG.load();
@@ -63,6 +68,7 @@ public final class ArisuBot extends JavaPlugin {
         }
         getLogger().debug("Initialization complete. ");
         ArisuBot.PluginRunning = true;
+        getLogger().debug("Loading and enabling cost " + interval.intervalMs() + "ms. ");
     }
 
     @Override
