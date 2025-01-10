@@ -1,7 +1,7 @@
 package top.rongxiaoli.backend.PluginLoader;
 
 import top.rongxiaoli.ArisuBot;
-import top.rongxiaoli.backend.PluginBase.PluginDataBase;
+import top.rongxiaoli.backend.interfaces.PluginBase.PluginDataBase;
 import top.rongxiaoli.plugins.DailySign.DailySignData;
 
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -11,10 +11,6 @@ public class DataLoader {
     public static DataLoader INSTANCE = new DataLoader();
     public DataLoader() {
         this.DataList = new CopyOnWriteArrayList<>();
-    }
-    private void addPlugins() {
-        DataList.add(DailySignData.INSTANCE);
-        ArisuBot.INSTANCE.reloadPluginData(DailySignData.INSTANCE);
     }
     public void load() {
         for (PluginDataBase e :

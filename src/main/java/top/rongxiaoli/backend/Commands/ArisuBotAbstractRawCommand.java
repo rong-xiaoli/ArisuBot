@@ -4,11 +4,16 @@ import net.mamoe.mirai.console.command.java.JRawCommand;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
 import top.rongxiaoli.ArisuBot;
-import top.rongxiaoli.backend.PluginBase.PluginBase;
+import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
-public class ArisuBotAbstractRawCommand extends JRawCommand implements PluginBase {
-    private MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(ArisuBotAbstractRawCommand.class, "ArisuBot.AbstractCompositeCommand");
-    public ArisuBotAbstractRawCommand(@NotNull String primaryName, @NotNull String[] secondaryNames) {
+public abstract class ArisuBotAbstractRawCommand extends JRawCommand implements PluginBase {
+    private boolean isOn = false;
+    private MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(ArisuBotAbstractRawCommand.class, "ArisuBot.AbstractRawCommand");
+    
+    public boolean isOn() {
+        return isOn;
+    }
+    public ArisuBotAbstractRawCommand(@NotNull String primaryName, @NotNull String... secondaryNames) {
         super(ArisuBot.INSTANCE, primaryName, secondaryNames);
     }
 
@@ -17,7 +22,9 @@ public class ArisuBotAbstractRawCommand extends JRawCommand implements PluginBas
      */
     @Override
     public void load() {
-
+        LOGGER.debug("Plugin loading. ");
+        isOn = true;
+        LOGGER.debug("Plugin loaded. ");
     }
 
     /**
@@ -25,7 +32,8 @@ public class ArisuBotAbstractRawCommand extends JRawCommand implements PluginBas
      */
     @Override
     public void reload() {
-
+        LOGGER.debug("Plugin reloading. ");
+        LOGGER.debug("Plugin reloaded. ");
     }
 
     /**
@@ -33,7 +41,9 @@ public class ArisuBotAbstractRawCommand extends JRawCommand implements PluginBas
      */
     @Override
     public void shutdown() {
-
+        LOGGER.debug("Plugin shutting down. ");
+        isOn = false;
+        LOGGER.debug("Plugin shut down. ");
     }
 
     /**
@@ -41,7 +51,8 @@ public class ArisuBotAbstractRawCommand extends JRawCommand implements PluginBas
      */
     @Override
     public void saveData() {
-
+        LOGGER.debug("Data saving. ");
+        LOGGER.debug("Data saved. ");
     }
 
     /**
@@ -49,6 +60,7 @@ public class ArisuBotAbstractRawCommand extends JRawCommand implements PluginBas
      */
     @Override
     public void reloadData() {
-
+        LOGGER.debug("Data reloading. ");
+        LOGGER.debug("Data reloaded. ");
     }
 }

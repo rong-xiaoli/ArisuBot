@@ -7,37 +7,38 @@ import cn.hutool.http.HttpException;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import net.mamoe.mirai.console.command.CommandContext;
-import net.mamoe.mirai.console.command.java.JRawCommand;
 import net.mamoe.mirai.message.data.*;
 import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
 import top.rongxiaoli.ArisuBot;
-import top.rongxiaoli.backend.PluginBase.PluginBase;
+import top.rongxiaoli.backend.Commands.ArisuBotAbstractRawCommand;
+import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.Objects;
-
 /**
  * Picture plugin.
  */
-public class PicturesPlugin extends JRawCommand implements PluginBase {
+@Plugin(name = "PicturesPlugin")
+public class PicturesPlugin extends ArisuBotAbstractRawCommand implements PluginBase {
+    private boolean pluginStatus = false;
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PicturesPlugin.class, "ArisuBot.PicturesPlugin");
     /**
      * The PicturePlugin static instance.
      */
     public static final PicturesPlugin INSTANCE = new PicturesPlugin();
     private DelayedDisposer disposer;
-    private static boolean isPluginRunning = false;
 
     /**
      * Pictures from lolicon API.
      */
     public PicturesPlugin() {
-        super(ArisuBot.INSTANCE, "setu");
-        setUsage("[/]setu [keyword1 keyword2 keyword3 ...]");
-        setDescription("涩图，使用Lolicon API，可指定关键词");
+        super("setu");
+        setUsage("[/]setu [keyword1 keyword2 keyword3 ...]     # 涩图，使用Lolicon API，可指定关键词");
+        setDescription("");
         setPrefixOptional(true);
     }
 
@@ -46,11 +47,7 @@ public class PicturesPlugin extends JRawCommand implements PluginBase {
      */
     @Override
     public void onCommand(@NotNull CommandContext context, @NotNull MessageChain args) {
-        // Plugin running?
-        if (!isPluginRunning) {
-            context.getSender().sendMessage("已禁用该插件");
-            return;
-        }
+        if (!pluginStatus) return;
         long userID = 0, subjectID = 0;
         boolean isDirectMessaging = false;
         // From console, return:
@@ -80,13 +77,11 @@ public class PicturesPlugin extends JRawCommand implements PluginBase {
         } catch (DelayedDisposer.ElementAlreadyExistsException e) {
             // Reject request.
             long time = disposer.QueryCoolingTime(Objects.requireNonNull(context.getSender().getUser()));
-            if (isDirectMessaging) {
-                context.getSender().sendMessage("请等待冷却：" + time + "秒");   // XXX: Use reply instead of directly say sth.
-                LOGGER.verbose("User is cooling. Done. ");
-            } else {
-                context.getSender().sendMessage(new At(userID).plus("请等待冷却：" + time + "秒"));   // Todo: Use reply instead of directly say sth.
-                LOGGER.verbose("User is cooling. Done. ");
-            }
+            MessageChainBuilder mcb = new MessageChainBuilder();
+            mcb.add(new QuoteReply(context.getOriginalMessage()));
+            mcb.add("请等待冷却：" + time + "秒");
+            context.getSender().sendMessage(mcb.build());
+            LOGGER.verbose("User is cooling. Done. ");
             return;
         }
 
@@ -206,11 +201,17 @@ public class PicturesPlugin extends JRawCommand implements PluginBase {
         disposer.startTiming();
         LOGGER.verbose("Try creating directories. ");
         Path targetPath = new File(ArisuBot.GetDataPath().toFile(), "PictureCache").toPath();
-        LOGGER.verbose("Cache directory: " + targetPath.getFileName());
-        if (!targetPath.toFile().mkdirs() && targetPath.toFile().exists()) {
-            LOGGER.warning("Directories could not be created. Could be either directory already exists or directory cannot be created. ");
+        LOGGER.verbose("Cache directory: " + targetPath.toAbsolutePath());
+        if (!targetPath.toFile().exists()) {
+            LOGGER.info("Creating directory: " + targetPath.toAbsolutePath());
+            if (!targetPath.toFile().mkdirs()) {
+                LOGGER.warning("Failed to create directories. ");
+                LOGGER.warning("Please check if the console has the correct permissions for: " + targetPath.toAbsolutePath());
+            }
+        } else {
+            LOGGER.verbose("Cache directory already exists: " + targetPath.toAbsolutePath());
         }
-        isPluginRunning = true;
+        enablePlugin();
         LOGGER.debug("Command loaded. ");
     }
 
@@ -220,7 +221,9 @@ public class PicturesPlugin extends JRawCommand implements PluginBase {
     @Override
     public void reload() {
         LOGGER.debug("Reloading. ");
+        LOGGER.verbose("Recreating disposer. ");
         disposer = new DelayedDisposer();
+        enablePlugin();
         LOGGER.debug("Reload complete. ");
     }
 
@@ -230,8 +233,8 @@ public class PicturesPlugin extends JRawCommand implements PluginBase {
     @Override
     public void shutdown() {
         LOGGER.debug("shutdown() invoked.");
+        disablePlugin();
         disposer.Shutdown();
-        isPluginRunning = false;
         LOGGER.debug("Shut down.");
     }
 
@@ -249,5 +252,29 @@ public class PicturesPlugin extends JRawCommand implements PluginBase {
     @Override
     public void reloadData() {
         LOGGER.debug("Nothing to load. ");
+    }
+
+    /**
+     * Disables this plugin.
+     */
+    @Override
+    public void disablePlugin() {
+        pluginStatus = false;
+    }
+
+    /**
+     * Enables this plugin.
+     */
+    @Override
+    public void enablePlugin() {
+        pluginStatus = true;
+    }
+
+    /**
+     * Get the plugin's status, true if on, false if off.
+     */
+    @Override
+    public boolean pluginStatus() {
+        return pluginStatus;
     }
 }

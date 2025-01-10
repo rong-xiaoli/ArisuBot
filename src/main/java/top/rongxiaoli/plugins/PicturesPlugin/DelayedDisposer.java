@@ -18,7 +18,6 @@ public class DelayedDisposer {
         this.consumeThread = new Thread(consumer);
     }
     DelayConsumer consumer = new DelayConsumer(this);
-    private boolean isLocked = false;
     private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(DelayedDisposer.class, "ArisuBot.PicturesPlugin.DelayedDisposer");
     private final Thread consumeThread;
     private final DelayQueue<CoolingUser> coolingQueue;
@@ -29,7 +28,7 @@ public class DelayedDisposer {
      */
     public void AddUser(User user) throws ElementAlreadyExistsException {
         if (userHashSet.contains(user.getId())) {
-            throw new ElementAlreadyExistsException(user);
+            throw new ElementAlreadyExistsException();
         }
         userHashSet.add(user.getId());
         coolingQueue.add(new CoolingUser(user.getId()));
@@ -43,7 +42,7 @@ public class DelayedDisposer {
      */
     public void AddUser(User user, int intervalSecond) throws ElementAlreadyExistsException {
         if (userHashSet.contains(user.getId())) {
-            throw new ElementAlreadyExistsException(user);
+            throw new ElementAlreadyExistsException();
         }
         userHashSet.add(user.getId());
         coolingQueue.add(new CoolingUser(user.getId(), ((long) intervalSecond) * 1000000));
@@ -66,9 +65,6 @@ public class DelayedDisposer {
             }
         }
         throw new NoSuchElementException("There's no such user: " + user.getId());
-    }
-    public boolean IsLocked() {
-        return this.isLocked;
     }
 
     public void startTiming() {
@@ -105,21 +101,13 @@ public class DelayedDisposer {
         }
     }
     public static class ElementAlreadyExistsException extends Exception {
-        private final Object obj;
-        public ElementAlreadyExistsException(Object obj) {
-            this.obj = obj;
+        public ElementAlreadyExistsException() {
         }
-        public ElementAlreadyExistsException(Object obj, String message) {
-            super(message);
-            this.obj = obj;
-        }
-        public Object getObj() {return obj;}
     }
     private static class DelayConsumer implements Runnable{
-        private boolean isShuttingDown = false;
+        private volatile boolean isShuttingDown = false;
 
-        private DelayedDisposer disposer;
-        private boolean isConsuming = false;
+        private final DelayedDisposer disposer;
         private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(DelayConsumer.class, "ArisuBot.PicturesPlugin.DelayedDisposer.DelayConsumer");
         public DelayConsumer(DelayedDisposer disposer) {
             this.disposer = disposer;
@@ -127,22 +115,23 @@ public class DelayedDisposer {
         public void Shutdown() {
             this.isShuttingDown = true;
         }
-        public boolean isConsuming() {return isConsuming;}
+
         @Override
         public void run() {
             do {
-                isConsuming = true;
-                if (!ThreadUtil.safeSleep(500)) {
-                    LOGGER.warning("Sleep is interrupted. ");
-                    isConsuming = false;
-                    return;
-                }
-                CoolingUser u;
-                while ((u = disposer.coolingQueue.poll()) != null) {
-                    LOGGER.verbose("Ejecting delayed element: " + u.user);
-                    disposer.userHashSet.remove(u.user);
-                }
+                mainCycle();
             } while (!isShuttingDown);
+        }
+        private void mainCycle() {
+            if (!ThreadUtil.safeSleep(500)) {
+                LOGGER.warning("Sleep is interrupted. ");
+                return;
+            }
+            CoolingUser u;
+            while ((u = disposer.coolingQueue.poll()) != null) {
+                LOGGER.verbose("Ejecting delayed element: " + u.user);
+                disposer.userHashSet.remove(u.user);
+            }
         }
     }
 }

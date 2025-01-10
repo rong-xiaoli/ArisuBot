@@ -1,21 +1,25 @@
 package top.rongxiaoli.plugins.Ping;
 
 import net.mamoe.mirai.console.command.CommandContext;
-import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
-import top.rongxiaoli.backend.PluginBase.PluginBase;
-
-public class Ping extends JSimpleCommand implements PluginBase {
-    private final MiraiLogger logger = MiraiLogger.Factory.INSTANCE.create(Ping.class, "ArisuBot.Ping");
+import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
+import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
+@Plugin(name = "Ping")
+public class Ping extends ArisuBotAbstractSimpleCommand implements PluginBase {
+    private volatile boolean pluginStatus = false;
+    private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Ping.class, "ArisuBot.Ping");
     public static final Ping INSTANCE = new Ping();
     public Ping() {
-        super(ArisuBot.INSTANCE, "ping");
+        super("ping");
+        setDescription("Ping, 返回Pong! ");
         setPrefixOptional(true);
     }
 
     @Handler
     public void run(CommandContext context) {
+        if (!pluginStatus) return;
         if (!ArisuBot.PluginRunning) {
             return;
         }
@@ -26,7 +30,9 @@ public class Ping extends JSimpleCommand implements PluginBase {
      * Load method. First time loading.
      */
     @Override
-    public void load() {logger.debug("Command loaded. ");
+    public void load() {
+        enablePlugin();
+        LOGGER.debug("Command loaded. ");
     }
 
     /**
@@ -34,7 +40,7 @@ public class Ping extends JSimpleCommand implements PluginBase {
      */
     @Override
     public void reload() {
-        logger.debug("Reload complete. ");
+        LOGGER.debug("Reload complete. ");
     }
 
     /**
@@ -42,7 +48,8 @@ public class Ping extends JSimpleCommand implements PluginBase {
      */
     @Override
     public void shutdown() {
-        logger.debug("shutdown() invoked. Nothing special, pass. ");
+        disablePlugin();
+        LOGGER.debug("shutdown() invoked. Nothing special, pass. ");
     }
 
     /**
@@ -50,7 +57,7 @@ public class Ping extends JSimpleCommand implements PluginBase {
      */
     @Override
     public void saveData() {
-        logger.debug("Nothing to store. ");
+        LOGGER.debug("Nothing to store. ");
     }
 
     /**
@@ -58,6 +65,30 @@ public class Ping extends JSimpleCommand implements PluginBase {
      */
     @Override
     public void reloadData() {
-        logger.debug("Nothing to load. ");
+        LOGGER.debug("Nothing to load. ");
+    }
+
+    /**
+     * Disables this plugin.
+     */
+    @Override
+    public void disablePlugin() {
+        pluginStatus = false;
+    }
+
+    /**
+     * Enables this plugin.
+     */
+    @Override
+    public void enablePlugin() {
+        pluginStatus = true;
+    }
+
+    /**
+     * Get the plugin's status, true if on, false if off.
+     */
+    @Override
+    public boolean pluginStatus() {
+        return pluginStatus;
     }
 }

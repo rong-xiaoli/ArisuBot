@@ -1,7 +1,6 @@
-package top.rongxiaoli.backend.PluginBase;
+package top.rongxiaoli.backend.interfaces.PluginBase;
 
 public interface PluginDataBase {
-    // Todo: Complete plugin data.
     PluginDataBase INSTANCE = null;
     void load();
     void reload();

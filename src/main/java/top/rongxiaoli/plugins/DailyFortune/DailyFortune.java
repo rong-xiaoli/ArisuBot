@@ -1,13 +1,14 @@
 package top.rongxiaoli.plugins.DailyFortune;
 
 import net.mamoe.mirai.console.command.CommandSender;
-import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
-import top.rongxiaoli.backend.PluginBase.PluginBase;
+import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
+import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.io.File;
 import java.security.SecureRandom;
@@ -15,18 +16,20 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 import java.util.Random;
-
-public class DailyFortune extends JSimpleCommand implements PluginBase {
+@Plugin(name = "DailyFortune")
+public class DailyFortune extends ArisuBotAbstractSimpleCommand implements PluginBase {
     public static final DailyFortune INSTANCE = new DailyFortune();
+    private boolean pluginStatus = false;
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(DailyFortune.class, "ArisuBot.DailyFortune");
 
     public DailyFortune() {
-        super(ArisuBot.INSTANCE, "fortune", "yunshi", "今日运势", "jrys");
+        super("fortune", "yunshi", "今日运势", "jrys");
         setDescription("今日运势，今天幸运吗？");
         setPrefixOptional(true);
     }
     @Handler
     public void onCommand(CommandSender sender) {
+        if (!pluginStatus) return;
         long senderID;
         try {
             senderID = Objects.requireNonNull(sender.getUser()).getId();
@@ -127,6 +130,7 @@ public class DailyFortune extends JSimpleCommand implements PluginBase {
                 (cal.get(Calendar.DAY_OF_YEAR) == 256)) {
             LOGGER.verbose("Happy programmer's day! ");
         }
+        enablePlugin();
         LOGGER.debug("Command loaded. ");
     }
 
@@ -143,7 +147,8 @@ public class DailyFortune extends JSimpleCommand implements PluginBase {
      */
     @Override
     public void shutdown() {
-        LOGGER.debug("Nothing to do, pass. ");
+        disablePlugin();
+        LOGGER.debug("DailyFortune shut down. ");
     }
 
     /**
@@ -160,5 +165,29 @@ public class DailyFortune extends JSimpleCommand implements PluginBase {
     @Override
     public void reloadData() {
         LOGGER.debug("Nothing to do, pass. ");
+    }
+
+    /**
+     * Disables this plugin.
+     */
+    @Override
+    public void disablePlugin() {
+        pluginStatus = false;
+    }
+
+    /**
+     * Enables this plugin.
+     */
+    @Override
+    public void enablePlugin() {
+        pluginStatus = true;
+    }
+
+    /**
+     * Get the plugin's status, true if on, false if off.
+     */
+    @Override
+    public boolean pluginStatus() {
+        return pluginStatus;
     }
 }
