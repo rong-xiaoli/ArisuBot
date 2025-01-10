@@ -16,7 +16,7 @@ public class Broadcast extends ArisuBotAbstractCompositeCommand {
     private boolean pluginStatus = false;
     private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Broadcast.class, "ArisuBot.Broadcast");
     public static Broadcast INSTANCE = new Broadcast();
-    private final MessageChainBuilder builder = new MessageChainBuilder();
+    private MessageChainBuilder builder = new MessageChainBuilder();
     private volatile boolean isBroadcasting = false;
     public Broadcast() {
         super("broadcast", "广播");

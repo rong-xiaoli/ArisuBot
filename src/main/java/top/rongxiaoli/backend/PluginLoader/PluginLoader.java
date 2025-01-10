@@ -105,12 +105,7 @@ public class PluginLoader {
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 LOGGER.error("Cannot load class " + clazz.getName() + " because field \"INSTANCE\" was not found or is inaccessible.");
                 LOGGER.error("Exception details: ", e);
-                // Continue loading other classes instead of throwing an exception
-                continue;
             } catch (ClassCastException e) {
-                LOGGER.warning("Cannot cast " + clazz.getName() + " to " + Command.class.getName());
-                // Continue loading other classes
-                continue;
                 LOGGER.warning("Cannot cast " + clazz.getName() + " to " + Command.class.getName());
             }
         }
