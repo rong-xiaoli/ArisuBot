@@ -20,7 +20,7 @@ public final class ArisuBot extends JavaPlugin {
     public static final DataLoader DATA = new DataLoader();
     public static volatile boolean PluginRunning = false;
     private ArisuBot() {
-        super(new JvmPluginDescriptionBuilder("top.rongxiaoli.ArisuBot", "0.0.0")
+        super(new JvmPluginDescriptionBuilder("top.rongxiaoli.ArisuBot", "0.0.1")
                 .name("ArisuBot")
                 .info("REBORN, even better. ")
                 .author("容小狸")
