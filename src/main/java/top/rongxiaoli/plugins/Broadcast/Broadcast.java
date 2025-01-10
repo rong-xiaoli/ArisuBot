@@ -11,6 +11,10 @@ import top.rongxiaoli.backend.interfaces.Plugin;
 
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 @Plugin(name = "Broadcast")
 public class Broadcast extends ArisuBotAbstractCompositeCommand {
     private boolean pluginStatus = false;
@@ -71,26 +75,27 @@ public class Broadcast extends ArisuBotAbstractCompositeCommand {
         }
         isBroadcasting = true;
         context.getSender().sendMessage("即将开始广播。");
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        int delay = 0;
         Random ran = new Random();
-        for (Friend SingleFriend :
+        for (Friend singleFriend :
                 friendsList) {
-            SingleFriend.sendMessage(builder.build());
-            LOGGER.verbose("Send to Friend: " + SingleFriend.getId());
-            try {
-                Thread.sleep(ran.nextInt(100, 3000));
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            delay += ran.nextInt(100,3000);
+            executor.schedule(() -> {
+                singleFriend.sendMessage(builder.build());
+            }, delay, TimeUnit.MILLISECONDS);
+            LOGGER.verbose("Send to Friend: " + singleFriend.getId());
         }
-        for (Group SingleGroup :
+        executor.shutdown();
+        delay = 0;
+        executor = Executors.newSingleThreadScheduledExecutor();
+        for (Group singleGroup :
                 groupList) {
-            SingleGroup.sendMessage(builder.build());
-            LOGGER.verbose("Send to Group: " + SingleGroup.getId());
-            try {
-                Thread.sleep(ran.nextInt(100, 3000));
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            delay += ran.nextInt(100, 3000);
+            executor.schedule(() -> {
+                singleGroup.sendMessage(builder.build());
+            }, delay, TimeUnit.MILLISECONDS);
+            LOGGER.verbose("Send to Group: " + singleGroup.getId());
         }
         isBroadcasting = false;
         context.getSender().sendMessage("广播结束，共发送了" + friendsList.size() + "个好友，共" + groupList.size() + "个群。");

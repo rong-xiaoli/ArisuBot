@@ -1,5 +1,7 @@
 package top.rongxiaoli.backend.Utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.JarURLConnection;
@@ -12,11 +14,11 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ClassUtil {
-    public static List<Class<?>> scan(Package pkg) {
+    public static List<Class<?>> scan(@NotNull Package pkg) {
         String pName = pkg.getName();
         return getClasses(pName);
     }
-    public static List<Class<?>> scan(String pkg) {
+    public static List<Class<?>> scan(@NotNull String pkg) {
         return getClasses(pkg);
     }
     public static List<Class<?>> scan(Package pkg, ClassLoader loader) {
@@ -102,7 +104,7 @@ public class ClassUtil {
         }
         File[] files = dir.listFiles(f -> (recursive && f.isDirectory()) || (f.getName().endsWith(".class")));
         for (File singleFile :
-                files) {
+                files != null ? files : new File[0]) {
             if (singleFile.isDirectory()) {
                 findClassesByFile(packageName + "." + singleFile.getName(), singleFile.getAbsolutePath(), recursive, classes);
             } else {

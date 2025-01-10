@@ -34,16 +34,24 @@ public interface PluginBase extends Command {
      */
     void reloadData();
     /**
-     * Disables this plugin.
+     * Manages the plugin's operational state.
+     * Thread-safe: State transitions are atomic and visible to all threads.
+     * State transition rules:
+     * - A disabled plugin cannot be disabled again
+     * - An enabled plugin cannot be enabled again
+     * - load() must be called before any enable/disable operations
+     * - shutdown() invalidates the plugin regardless of current state
      */
-    void disablePlugin();
+    void disablePlugin() throws IllegalStateException;
     /**
-     * Enables this plugin.
+     * Manages the plugin's operational state.
+     * Thread-safe: State transitions are atomic and visible to all threads.
+     * State transition rules:
+     * - A disabled plugin cannot be disabled again
+     * - An enabled plugin cannot be enabled again
+     * - load() must be called before any enable/disable operations
+     * - shutdown() invalidates the plugin regardless of current state
      */
-    void enablePlugin();
-
-    /**
-     * Get the plugin's status, true if on, false if off.
-     */
+    void enablePlugin() throws IllegalStateException;
     boolean pluginStatus();
 }

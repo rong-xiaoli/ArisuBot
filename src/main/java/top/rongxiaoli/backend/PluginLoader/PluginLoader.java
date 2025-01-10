@@ -8,6 +8,7 @@ import top.rongxiaoli.backend.Utils.ClassUtil;
 import top.rongxiaoli.backend.interfaces.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,9 +98,12 @@ public class PluginLoader {
             if (!clazz.isAnnotationPresent(Plugin.class)) {
                 continue;
             }
+            Plugin plugin = clazz.getDeclaredAnnotation(Plugin.class);
+            if (plugin.name().isEmpty()) {
+                LOGGER.debug("Class " + clazz.getName() + "have an empty plugin name. ");
+            }
             try {
                 Field f = clazz.getDeclaredField("INSTANCE");
-                f.setAccessible(true);
                 PluginList.add((PluginBase) f.get(null));
                 INSTANCE.registerCommand((Command) f.get(null), false);
             } catch (NoSuchFieldException | IllegalAccessException e) {

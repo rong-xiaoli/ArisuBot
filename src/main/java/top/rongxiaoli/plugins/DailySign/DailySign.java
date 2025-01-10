@@ -13,16 +13,18 @@ import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
 @Plugin(name = "DailySign")
 public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBase {
     private boolean pluginStatus = false;
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(4);
-    private static int signCount = 0;
+    private volatile static AtomicInteger signCount;
     private static final DailySignData DATA = new DailySignData();
     private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(DailySign.class, "ArisuBot.DailySign");
     public static final DailySign INSTANCE = new DailySign();
     public static void clearSignCount() {
-        signCount = 0;
+        signCount.set(0);
     }
     public DailySign() {
         super("sign", "qd");
@@ -54,9 +56,11 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         if (newSign.getTimeInMillis() - lastSign.getTimeInMillis() >= 86400) {
             newCombo = 1;
         } else newCombo = signCombo + 1;
-        signCount += 1;
-        DATA.setLastSignDate(userID, newSign.getTimeInMillis());
-        DATA.setSignCombo(userID, newCombo);
+        signCount.addAndGet(1);
+        synchronized (DATA) {
+            DATA.setLastSignDate(userID, newSign.getTimeInMillis());
+            DATA.setSignCombo(userID, newCombo);
+        }
         mainBuilder.append("签到咯~\n");
         mainBuilder.append(DailySignString.GetRandomString()).append("\n")
                 .append("你已连续签到").append(String.valueOf(newCombo)).append("天\n")

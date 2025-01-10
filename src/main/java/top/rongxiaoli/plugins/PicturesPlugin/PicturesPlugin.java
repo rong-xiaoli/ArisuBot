@@ -202,13 +202,14 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
         LOGGER.verbose("Try creating directories. ");
         Path targetPath = new File(ArisuBot.GetDataPath().toFile(), "PictureCache").toPath();
         LOGGER.verbose("Cache directory: " + targetPath.toAbsolutePath());
-        if (!targetPath.toFile().mkdirs()) {
-            if (!targetPath.toFile().exists()) {
-                LOGGER.warning("Directories could not be created. ");
-                LOGGER.warning("Please check if the console have the correct permission to the target directory: " + targetPath.toAbsolutePath());
-            } else {
-                LOGGER.info("Creating directory: " + targetPath.toAbsolutePath());
+        if (!targetPath.toFile().exists()) {
+            LOGGER.info("Creating directory: " + targetPath.toAbsolutePath());
+            if (!targetPath.toFile().mkdirs()) {
+                LOGGER.warning("Failed to create directories. ");
+                LOGGER.warning("Please check if the console has the correct permissions for: " + targetPath.toAbsolutePath());
             }
+        } else {
+            LOGGER.verbose("Cache directory already exists: " + targetPath.toAbsolutePath());
         }
         enablePlugin();
         LOGGER.debug("Command loaded. ");

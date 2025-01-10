@@ -8,7 +8,7 @@ import top.rongxiaoli.backend.interfaces.Plugin;
 
 @Plugin(name = "Management")
 public class Management extends ArisuBotAbstractCompositeCommand {
-    public static Management INSTANCE = new Management();
+    public static final Management INSTANCE = new Management();
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Management.class, "ArisuBot.Management");
     public Management() {
         super("manage", "管理");
