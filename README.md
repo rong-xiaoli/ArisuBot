@@ -3,7 +3,7 @@
 [![FOSSA Security Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frong-xiaoli%2FArisuBot.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Frong-xiaoli%2FArisuBot?ref=badge_shield&issueType=security)
 
 ## 使用建议
-由于本人写的代码过于狗屎，建议添加以下插件，以简洁且方便地运行本插件：
+由于本人写的代码过于狗屎，不配备权限管理，建议添加以下插件，以简洁且方便地运行本插件：
 
 必选：
 [chat-command 聊天触发命令](https://github.com/project-mirai/chat-command)
