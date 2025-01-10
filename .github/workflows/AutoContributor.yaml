@@ -4,8 +4,8 @@ name: Auto adding contributors when version bumps.
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-        branches:
-            - main
+    branches:
+        - main
 jobs:
   contrib-readme-job:
     runs-on: ubuntu-latest
