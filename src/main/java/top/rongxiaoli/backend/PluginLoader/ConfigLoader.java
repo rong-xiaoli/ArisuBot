@@ -17,10 +17,6 @@ public class ConfigLoader {
     public ConfigLoader() {
         this.ConfigList = new CopyOnWriteArrayList<>();
     }
-    private void addPlugins() {
-        ConfigList.add(PokeReactTextConfig.INSTANCE);
-        ArisuBot.INSTANCE.reloadPluginConfig(PokeReactTextConfig.INSTANCE);
-    }
     public void load() {
         for (PluginConfigBase e :
                 ConfigList) {

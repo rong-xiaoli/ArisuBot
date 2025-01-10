@@ -23,25 +23,25 @@ public class PluginLoader {
     public PluginLoader() {
         this.PluginList = new CopyOnWriteArrayList<>();
     }
-    public void reload(String target) {
+    public boolean reload(String target) {
         for (PluginBase item :
                 PluginList) {
-            String pluginName = item.getPrimaryName();
-            pluginName = pluginName.toLowerCase();
-            if (target.toLowerCase().contains(pluginName)) {
+            if (item.getClass().getName().toLowerCase().contains(target.toLowerCase())) {
                 item.reload();
-                break;
+                return true;
             }
         }
+        return false;
     }
-    public void shutdown(String target) {
+    public boolean shutdown(String target) {
         for (PluginBase item :
                 PluginList) {
-            if (item.getClass().getName().contains(target)) {
+            if (item.getClass().getName().toLowerCase().contains(target.toLowerCase())) {
                 item.shutdown();
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     /**

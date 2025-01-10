@@ -31,7 +31,6 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
      */
     public static final PicturesPlugin INSTANCE = new PicturesPlugin();
     private DelayedDisposer disposer;
-    private static boolean isPluginRunning = false;
 
     /**
      * Pictures from lolicon API.
@@ -49,11 +48,6 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
     @Override
     public void onCommand(@NotNull CommandContext context, @NotNull MessageChain args) {
         if (!pluginStatus) return;
-        // Plugin running?
-        if (!isPluginRunning) {
-            context.getSender().sendMessage("该插件目前不可用");
-            return;
-        }
         long userID = 0, subjectID = 0;
         boolean isDirectMessaging = false;
         // From console, return:
@@ -83,13 +77,11 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
         } catch (DelayedDisposer.ElementAlreadyExistsException e) {
             // Reject request.
             long time = disposer.QueryCoolingTime(Objects.requireNonNull(context.getSender().getUser()));
-            if (isDirectMessaging) {
-                context.getSender().sendMessage("请等待冷却：" + time + "秒");   // XXX: Use reply instead of directly say sth.
-                LOGGER.verbose("User is cooling. Done. ");
-            } else {
-                context.getSender().sendMessage(new At(userID).plus("请等待冷却：" + time + "秒"));   // Todo: Use reply instead of directly say sth.
-                LOGGER.verbose("User is cooling. Done. ");
-            }
+            MessageChainBuilder mcb = new MessageChainBuilder();
+            mcb.add(new QuoteReply(context.getOriginalMessage()));
+            mcb.add("请等待冷却：" + time + "秒");
+            context.getSender().sendMessage(mcb.build());
+            LOGGER.verbose("User is cooling. Done. ");
             return;
         }
 
@@ -209,11 +201,15 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
         disposer.startTiming();
         LOGGER.verbose("Try creating directories. ");
         Path targetPath = new File(ArisuBot.GetDataPath().toFile(), "PictureCache").toPath();
-        LOGGER.verbose("Cache directory: " + targetPath.getFileName());
-        if (!targetPath.toFile().mkdirs() && targetPath.toFile().exists()) {
-            LOGGER.warning("Directories could not be created. Could be either directory already exists or directory cannot be created. ");
+        LOGGER.verbose("Cache directory: " + targetPath.toAbsolutePath());
+        if (!targetPath.toFile().mkdirs()) {
+            if (!targetPath.toFile().exists()) {
+                LOGGER.warning("Directories could not be created. ");
+                LOGGER.warning("Please check if the console have the correct permission to the target directory: " + targetPath.toAbsolutePath());
+            } else {
+                LOGGER.info("Creating directory: " + targetPath.toAbsolutePath());
+            }
         }
-        isPluginRunning = true;
         enablePlugin();
         LOGGER.debug("Command loaded. ");
     }
@@ -224,8 +220,9 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
     @Override
     public void reload() {
         LOGGER.debug("Reloading. ");
+        LOGGER.verbose("Recreating disposer. ");
         disposer = new DelayedDisposer();
-        isPluginRunning = true;
+        enablePlugin();
         LOGGER.debug("Reload complete. ");
     }
 
@@ -235,9 +232,8 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
     @Override
     public void shutdown() {
         LOGGER.debug("shutdown() invoked.");
-        disposer.Shutdown();
-        isPluginRunning = false;
         disablePlugin();
+        disposer.Shutdown();
         LOGGER.debug("Shut down.");
     }
 

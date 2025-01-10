@@ -12,10 +12,6 @@ public class DataLoader {
     public DataLoader() {
         this.DataList = new CopyOnWriteArrayList<>();
     }
-    private void addPlugins() {
-        DataList.add(DailySignData.INSTANCE);
-        ArisuBot.INSTANCE.reloadPluginData(DailySignData.INSTANCE);
-    }
     public void load() {
         for (PluginDataBase e :
                 DataList) {

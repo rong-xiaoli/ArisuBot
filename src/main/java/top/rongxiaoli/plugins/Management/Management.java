@@ -20,7 +20,10 @@ public class Management extends ArisuBotAbstractCompositeCommand {
             context.getSender().sendMessage("Plugin name cannot be empty");
             return;
         }
-        ArisuBot.LOADER.reload(targetPlugin);
+        if (!ArisuBot.LOADER.reload(targetPlugin)) {
+            context.getSender().sendMessage("Plugin "+ targetPlugin + " cannot be reloaded. ");
+            return;
+        }
         context.getSender().sendMessage("Plugin " + targetPlugin + " enabled successfully");
     }
     @SubCommand
@@ -29,7 +32,10 @@ public class Management extends ArisuBotAbstractCompositeCommand {
             context.getSender().sendMessage("Plugin name cannot be empty");
             return;
         }
-        ArisuBot.LOADER.shutdown(targetPlugin);
+        if (!ArisuBot.LOADER.shutdown(targetPlugin)) {
+            context.getSender().sendMessage("Plugin "+ targetPlugin + " cannot be shut down. ");
+            return;
+        }
         context.getSender().sendMessage("Plugin " + targetPlugin + " disabled successfully");
     }
     @Override
