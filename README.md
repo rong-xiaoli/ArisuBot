@@ -41,7 +41,7 @@ LuckPerms在MC圈子里是一个非常热门的权限管理器，以简洁易懂
 
 Repo stats
 ---
-![Alt](https://repobeats.axiom.co/api/embed/300e2c4e6d31f54014e037d44f45222a3b4e5382.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/4ad0543e12a9f2f9e6c4806a716b8ca54e5f87f7.svg "Repobeats analytics image")
 
 
 源自某个少女曾经的记忆。
