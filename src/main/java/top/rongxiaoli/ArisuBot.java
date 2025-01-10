@@ -33,9 +33,19 @@ public final class ArisuBot extends JavaPlugin {
     @Override
     public void onLoad(@NotNull PluginComponentStorage $this$onLoad) {
         getLogger().debug("Loading ArisuBot plugin config...");
-        CONFIG.load();
+        try {
+            CONFIG.load();
+        } catch (Exception e) {
+            getLogger().error("Failed to load plugin config: " + e.getMessage(), e);
+            throw e;
+        }
         getLogger().debug("Loading ArisuBot plugin data...");
-        DATA.load();
+        try {
+            DATA.load();
+        } catch (Exception e) {
+            getLogger().error("Failed to load plugin data: " + e.getMessage(), e);
+            throw e;
+        }
         getLogger().debug("Load complete. Waiting for enabling. ");
     }
 
