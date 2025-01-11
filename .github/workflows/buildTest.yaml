@@ -6,6 +6,8 @@ name: Plugin Build CI
 on:
   # Triggers the workflow on push events with tags matching 'v*'
   push:
+    branches: 
+      - main
     tags:
       - 'v*'
   pull_request:
@@ -32,7 +34,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with: 
           java-version: 21
-          java-distribution: 'openjdk'
+          java-distribution: 'zulu'
       # Build gradle. 
       - name: Make gradle executable. 
         run: chmod +x ./gradlew   # That's not good. 
