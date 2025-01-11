@@ -30,11 +30,13 @@ jobs:
         with:
           submodules: 'recursive'
       # Setup Java environment. 
-      - name: Setup Java environment. 
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Setup Gradle.  
         uses: gradle/actions/setup-gradle@v3
-        with: 
-          java-version: 21
-          java-distribution: 'zulu'
       # Build gradle. 
       - name: Make gradle executable. 
         run: chmod +x ./gradlew   # That's not good. 
