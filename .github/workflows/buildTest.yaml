@@ -31,7 +31,7 @@ jobs:
       - name: Setup Java environment. 
         uses: gradle/actions/setup-gradle@v3
         with: 
-          java-version: 17
+          java-version: 21
           java-distribution: 'openjdk'
       # Build gradle. 
       - name: Make gradle executable. 
