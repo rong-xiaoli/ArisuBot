@@ -64,7 +64,7 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         mainBuilder.append("签到咯~\n");
         mainBuilder.append(DailySignString.GetRandomString()).append("\n")
                 .append("你已连续签到").append(String.valueOf(newCombo)).append("天\n")
-                .append("今天你是第").append(String.valueOf(signCount)).append("个签到的");
+                .append("今天你是第").append(String.valueOf(signCount.get())).append("个签到的");
         context.getSender().sendMessage(mainBuilder.build());
     }
     /**
@@ -75,6 +75,7 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         LOGGER.debug("DailySign loading. ");
         DATA.load();
         LOGGER.verbose("Data load complete. ");
+        signCount = new AtomicInteger(0);
         LOGGER.verbose("No config load needed. ");
         executorService.scheduleAtFixedRate(
                 new DailySignTimer.SignCountTimer(),
