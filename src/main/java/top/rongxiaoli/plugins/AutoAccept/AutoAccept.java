@@ -44,7 +44,7 @@ public class AutoAccept extends ArisuBotAbstractCompositeCommand {
             e.accept();
         } else {
             Stranger stranger = e.getBot().getStranger(e.getFromId());
-            if (stranger != null) stranger.sendMessage("暂不支持邀请进群");
+            if (stranger != null) stranger.sendMessage("暂不接受新的好友请求");
             e.reject(false);
         }
     }
