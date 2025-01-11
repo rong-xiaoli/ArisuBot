@@ -33,6 +33,7 @@ LuckPerms在MC圈子里是一个非常热门的权限管理器，以简洁易懂
 <a href="https://github.com/rong-xiaoli/ArisuBot/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=rong-xiaoli/ArisuBot" />
 </a>
+
 Repo stats
 ---
 ![Alt](https://repobeats.axiom.co/api/embed/4ad0543e12a9f2f9e6c4806a716b8ca54e5f87f7.svg "Repobeats analytics image")
