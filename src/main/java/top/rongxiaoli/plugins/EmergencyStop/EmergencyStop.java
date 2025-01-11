@@ -17,7 +17,7 @@ public class EmergencyStop extends ArisuBotAbstractCompositeCommand {
         super("EmergencyStop", "停止", "estop");
         setDescription("紧急停止。后面加一个字符串可以查看状态。");
     }
-    @SubCommand
+    @SubCommand("switch")
     public void switchStatus(CommandContext context) {
         if (isStopped) {
             context.getSender().sendMessage("正在关闭紧急停止");
