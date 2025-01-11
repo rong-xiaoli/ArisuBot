@@ -4,15 +4,14 @@ name: Plugin Build CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push events with tags matching 'v*'
-  push:
-    tags:
-      - 'v*'
-  pull_request:
-    branches:
-    - main
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
 
 jobs:
   # This workflow contains a single job called "build"
@@ -28,7 +27,12 @@ jobs:
         with:
           submodules: 'recursive'
       # Setup Java environment. 
-      - name: Setup Java environment. 
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Setup Gradle.  
         uses: gradle/actions/setup-gradle@v3
       # Build gradle. 
       - name: Make gradle executable. 

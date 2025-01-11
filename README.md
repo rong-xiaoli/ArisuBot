@@ -3,7 +3,7 @@
 [![FOSSA Security Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frong-xiaoli%2FArisuBot.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Frong-xiaoli%2FArisuBot?ref=badge_shield&issueType=security)
 
 ## 使用建议
-由于本人写的代码过于狗屎，建议添加以下插件，以简洁且方便地运行本插件：
+由于本人写的代码过于狗屎，不配备权限管理，建议添加以下插件，以简洁且方便地运行本插件：
 
 必选：
 [chat-command 聊天触发命令](https://github.com/project-mirai/chat-command)
@@ -29,19 +29,14 @@ LuckPerms在MC圈子里是一个非常热门的权限管理器，以简洁易懂
 - [ ] 抽奖
 - [ ] 财富榜
 
-## 共同管理
-
-<!-- readme: collaborators -start -->
-<!-- readme: collaborators -end -->
-
 ## 贡献者
-
-<!-- readme: contributors -start -->
-<!-- readme: contributors -end -->
+<a href="https://github.com/rong-xiaoli/ArisuBot/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=rong-xiaoli/ArisuBot" />
+</a>
 
 Repo stats
 ---
-![Alt](https://repobeats.axiom.co/api/embed/300e2c4e6d31f54014e037d44f45222a3b4e5382.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/4ad0543e12a9f2f9e6c4806a716b8ca54e5f87f7.svg "Repobeats analytics image")
 
 
 源自某个少女曾经的记忆。
