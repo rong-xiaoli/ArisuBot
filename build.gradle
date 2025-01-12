@@ -6,6 +6,8 @@ plugins {
 }
 dependencies {
     implementation 'cn.hutool:hutool-all:5.8.35'
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
 }
 group = 'top.rongxiaoli'
 version = '0.0.1'
