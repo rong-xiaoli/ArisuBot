@@ -53,23 +53,23 @@ public class DailySignData extends JavaAutoSavePluginData implements PluginDataB
         ArisuBot.INSTANCE.savePluginData(INSTANCE);
         LOGGER.debug("Data saved. ");
     }
-    public long queryLastSignDate(long userID) {
+    public synchronized long queryLastSignDate(long userID) {
         Map<Long, Long> temp = DailySignData.INSTANCE.lastSignDateDataset.get();
         if(temp.get(userID) == null) return 0L;
         return temp.get(userID);
     }
-    public int querySignCombo(long userID) {
+    public synchronized int querySignCombo(long userID) {
         Map<Long, Integer> temp = DailySignData.INSTANCE.signComboDataSet.get();
         if (temp.get(userID) == null) return 0;
         return temp.get(userID);
     }
-    public void setLastSignDate(long userID, long date) {
+    public synchronized void setLastSignDate(long userID, long date) {
         Map<Long,Long> temp = DailySignData.INSTANCE.lastSignDateDataset.get();
         if (temp.containsKey(userID)) temp.replace(userID, date);
         else temp.put(userID, date);
         DailySignData.INSTANCE.lastSignDateDataset.set(temp);
     }
-    public void setSignCombo(long userID, int count) {
+    public synchronized void setSignCombo(long userID, int count) {
         Map<Long,Integer> temp = DailySignData.INSTANCE.signComboDataSet.get();
         if (temp.containsKey(userID)) temp.replace(userID, count);
         else temp.put(userID, count);
