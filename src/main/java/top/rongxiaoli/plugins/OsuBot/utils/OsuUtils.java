@@ -6,6 +6,9 @@ import top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct.OsuSigSettings;
 import top.rongxiaoli.plugins.OsuBot.data.OsuData;
 
 public class OsuUtils {
+    private OsuUtils() {
+        throw new UnsupportedOperationException("工具类不应该被实例化");
+    }
     /**
      * Query username. Null if not found.
      * @param userID QQ number of the user.
