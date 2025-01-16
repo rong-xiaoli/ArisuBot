@@ -10,20 +10,15 @@ public class UserJudgeUtils {
         LOGGER = l;
     }
     private final MiraiLogger LOGGER;
-    public boolean isConsoleCalling(CommandContext context) {
+    public static boolean isConsoleCalling(CommandContext context) {
         long userID = 0, subjectID = 0;
         // From console, return:
         try {
             userID = Objects.requireNonNull(context.getSender().getUser()).getId();
             subjectID = Objects.requireNonNull(context.getSender().getSubject()).getId();
         } catch (NullPointerException e) {
-            LOGGER.warning("This command cannot be invoked from console! ");
             return true;
         }
-        if (userID == 0 || subjectID == 0) {
-            LOGGER.warning("This command cannot be invoked from console! ");
-            return true;
-        }
-        return false;
+        return userID == 0 || subjectID == 0;
     }
 }
