@@ -55,11 +55,13 @@ public class DailySignData extends JavaAutoSavePluginData implements PluginDataB
     }
     public synchronized long queryLastSignDate(long userID) {
         Map<Long, Long> temp = DailySignData.INSTANCE.lastSignDateDataset.get();
+        LOGGER.verbose("temp: " + temp.size());
         if(temp.get(userID) == null) return 0L;
         return temp.get(userID);
     }
     public synchronized int querySignCombo(long userID) {
         Map<Long, Integer> temp = DailySignData.INSTANCE.signComboDataSet.get();
+        LOGGER.verbose("temp: " + temp.size());
         if (temp.get(userID) == null) return 0;
         return temp.get(userID);
     }
@@ -67,12 +69,18 @@ public class DailySignData extends JavaAutoSavePluginData implements PluginDataB
         Map<Long,Long> temp = DailySignData.INSTANCE.lastSignDateDataset.get();
         if (temp.containsKey(userID)) temp.replace(userID, date);
         else temp.put(userID, date);
+        LOGGER.verbose("temp: " + temp.size());
+        LOGGER.verbose("Old: " + INSTANCE.lastSignDateDataset.get().size());
         DailySignData.INSTANCE.lastSignDateDataset.set(temp);
+        LOGGER.verbose("New: " + INSTANCE.lastSignDateDataset.get().size());
     }
     public synchronized void setSignCombo(long userID, int count) {
         Map<Long,Integer> temp = DailySignData.INSTANCE.signComboDataSet.get();
         if (temp.containsKey(userID)) temp.replace(userID, count);
         else temp.put(userID, count);
+        LOGGER.verbose("temp: " + temp.size());
+        LOGGER.verbose("Old: " + INSTANCE.signComboDataSet.get().size());
         DailySignData.INSTANCE.signComboDataSet.set(temp);
+        LOGGER.verbose("New: " + INSTANCE.signComboDataSet.get().size());
     }
 }

@@ -1,5 +1,6 @@
 package top.rongxiaoli.plugins.OsuBot;
 
+import cn.hutool.http.HttpException;
 import net.mamoe.mirai.console.command.CommandContext;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.User;
@@ -9,20 +10,24 @@ import net.mamoe.mirai.message.data.QuoteReply;
 import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
+import top.rongxiaoli.backend.Utils.UserJudgeUtils;
 import top.rongxiaoli.backend.interfaces.Plugin;
-import top.rongxiaoli.plugins.OsuBot.backend.UserData;
+import top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct.OsuSigBaseData;
 import top.rongxiaoli.plugins.OsuBot.backend.osusig.OsuSigUtils;
+import top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct.OsuSigEnum;
 import top.rongxiaoli.plugins.OsuBot.data.OsuData;
 import top.rongxiaoli.plugins.OsuBot.backend.UserBaseData;
-import top.rongxiaoli.plugins.OsuBot.backend.osusig.backend.kotlinTypes.OsuSigSettings;
+import top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct.OsuSigSettings;
+import top.rongxiaoli.plugins.OsuBot.utils.OsuUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Plugin(name = "OsuBot")
 public class OsuBot extends ArisuBotAbstractCompositeCommand {
     private volatile boolean pluginStatus = false;
+    public static final OsuData DATA = new OsuData();
     public static final OsuBot INSTANCE = new OsuBot();
     public MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(OsuBot.class, "ArisuBot.OsuBot");
     private AtomicInteger requestCounter = new AtomicInteger(0);
@@ -33,6 +38,56 @@ public class OsuBot extends ArisuBotAbstractCompositeCommand {
     @Description("将osu!账号绑定至你的QQ号。")
     public void bindUserName(CommandContext context, String username) {
         if (!pluginStatus) return;
+        if (UserJudgeUtils.isConsoleCalling(context)) {
+            context.getSender().sendMessage("this command cannot be invoked from console! ");
+            return;
+        }
+        User user = context.getSender().getUser();
+        Contact contact = context.getSender().getSubject();
+        if (user == null || contact == null) {
+            context.getSender().sendMessage("用户为空！");
+            return;
+        }
+        long userID = user.getId();
+        MessageChainBuilder mcb = new MessageChainBuilder();
+        mcb.add(new QuoteReply(context.getOriginalMessage()));
+        mcb.add("你绑定了：" + username);
+        OsuSigBaseData osuSigBaseData;
+        if (OsuUtils.getName(userID) != null) {
+            mcb.add("，你的设置将被继承。");
+            osuSigBaseData = OsuSigUtils.getBaseData(userID);
+        } else osuSigBaseData = new OsuSigBaseData(new OsuSigSettings());
+        context.getSender().sendMessage(mcb.build());
+        OsuUtils.setName(userID, username);
+        LOGGER.verbose("User " + userID + "'s username changed to: " + username);
+        byte[] pictContent;
+        try {
+            pictContent = OsuSigUtils.getPicture(userID);
+        } catch (HttpException e) {
+            LOGGER.warning("Cannot fetch target image: " + OsuSigUtils.getURL(username, osuSigBaseData.getOsuSigSettings()));
+            context.getSender().sendMessage("出现意外，获取图片失败。");
+            return;
+        }
+        if (pictContent == null) {
+            context.getSender().sendMessage("出现意外，图片返回值为空。");
+            LOGGER.warning("Got a null response: " + OsuSigUtils.getURL(username, osuSigBaseData.getOsuSigSettings()));
+            return;
+        }
+        ExternalResource resource = ExternalResource.create(Objects.requireNonNull(pictContent));
+        Image image = contact.uploadImage(resource);
+        mcb = new MessageChainBuilder();
+        mcb.add("osu!sig预览：");
+        mcb.add(image);
+        contact.sendMessage(mcb.build());
+    }
+    @SubCommand("name")
+    @Description("查询你目前绑定的用户名")
+    public void queryUserName(CommandContext context) {
+        if (!pluginStatus) return;
+        if (UserJudgeUtils.isConsoleCalling(context)) {
+            context.getSender().sendMessage("this command cannot be invoked from console! ");
+            return;
+        }
         User user = context.getSender().getUser();
         Contact contact = context.getSender().getSubject();
         if (user == null || contact == null) {
@@ -44,42 +99,33 @@ public class OsuBot extends ArisuBotAbstractCompositeCommand {
             LOGGER.warning("This command cannot be invoked in terminal! ");
             return;
         }
-        MessageChainBuilder mcb = new MessageChainBuilder();
-        mcb.add(new QuoteReply(context.getOriginalMessage()));
-        mcb.add("你绑定了：" + username);
-        UserBaseData data = OsuData.INSTANCE.getUserData(userID);
-        UserData userData;
-        if (OsuData.INSTANCE.getUserData(userID) == null) {
-            userData = new UserData(new OsuSigSettings());
-        } else {
-            userData = data.getUserData();
-            mcb.add("，你的设置将被继承。");
-        }
-        context.getSender().sendMessage(mcb.build());
-        UserBaseData newData = new UserBaseData(username, userData);
-        OsuData.INSTANCE.setUserData(userID, newData);
-        LOGGER.verbose("User " + userID + "'s username changed to: " + username);
-        byte[] pictContent = null;
-        try {
-            pictContent = OsuSigUtils.downloadPictureInBytes(
-                    OsuSigUtils.getURL(username, userData.getOsuSigSettings()), userID);
-        } catch (Exception e) {
-            LOGGER.warning("Cannot fetch target image: " + OsuSigUtils.getURL(username, userData.getOsuSigSettings()));
-            context.getSender().sendMessage("出现意外，获取图片失败。");
-        }
-        ExternalResource resource = null;
-        if (pictContent == null) {
-            context.getSender().sendMessage("出现意外，图片返回值为空。");
-            LOGGER.warning("Got a null response: " + OsuSigUtils.getURL(username, userData.getOsuSigSettings()));
-        }
-        resource = ExternalResource.create(pictContent);
-        Image image = contact.uploadImage(resource);
-        mcb = new MessageChainBuilder();
-        mcb.add("预览：");
-        mcb.add(image);
-        contact.sendMessage(mcb.build());
+        String name = OsuUtils.getName(userID);
+        if (name != null) context.getSender().sendMessage("您的用户名为：" + name);
+        else context.getSender().sendMessage("您尚未绑定用户名！");
     }
-
+    @SubCommand("del")
+    @Description("从数据中移除你的信息，包括设置。")
+    public void deleteUser(CommandContext context) {
+        if (!pluginStatus) return;
+        if (UserJudgeUtils.isConsoleCalling(context)) {
+            context.getSender().sendMessage("this command cannot be invoked from console! ");
+            return;
+        }
+        User user = context.getSender().getUser();
+        Contact contact = context.getSender().getSubject();
+        if (user == null || contact == null) {
+            context.getSender().sendMessage("用户为空！");
+            return;
+        }
+        long userID = user.getId();
+        try {
+            DATA.deleteUserData(userID);
+        } catch (NoSuchElementException e) {
+            context.getSender().sendMessage("未找到该用户。");
+            return;
+        }
+        context.getSender().sendMessage("用户已移除。设置已清空。");
+    }
     /**
      * Manages the plugin's operational state.
      * Thread-safe: State transitions are atomic and visible to all threads.
@@ -120,7 +166,7 @@ public class OsuBot extends ArisuBotAbstractCompositeCommand {
     public void load() {
         LOGGER.debug("OsuBot loading. ");
         LOGGER.verbose("Loading data. ");
-        OsuData.INSTANCE.load();
+        DATA.load();
         enablePlugin();
         LOGGER.debug("OsuBot loaded. ");
     }
@@ -132,9 +178,9 @@ public class OsuBot extends ArisuBotAbstractCompositeCommand {
     public void reload() {
         LOGGER.debug("OsuBot reloading. ");
         LOGGER.verbose("Saving data. ");
-        OsuData.INSTANCE.saveData();
+        DATA.saveData();
         LOGGER.verbose("Reloading data. ");
-        OsuData.INSTANCE.reload();
+        DATA.reload();
         LOGGER.debug("OsuBot reloaded. ");
     }
 
@@ -144,7 +190,7 @@ public class OsuBot extends ArisuBotAbstractCompositeCommand {
     @Override
     public void shutdown() {
         LOGGER.debug("OsuBot shutting down. ");
-        OsuData.INSTANCE.shutdown();
+        DATA.shutdown();
         disablePlugin();
         LOGGER.debug("OsuBot shut down. ");
     }
@@ -155,7 +201,7 @@ public class OsuBot extends ArisuBotAbstractCompositeCommand {
     @Override
     public void saveData() {
         LOGGER.debug("Saving data. ");
-        OsuData.INSTANCE.saveData();
+        DATA.saveData();
         LOGGER.debug("Data saved. ");
     }
 
@@ -165,7 +211,7 @@ public class OsuBot extends ArisuBotAbstractCompositeCommand {
     @Override
     public void reloadData() {
         LOGGER.debug("Reloading data. ");
-        OsuData.INSTANCE.reload();
+        DATA.reload();
         LOGGER.debug("Data reloaded. ");
     }
 }

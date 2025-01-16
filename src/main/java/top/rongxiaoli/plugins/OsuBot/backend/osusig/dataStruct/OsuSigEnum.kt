@@ -1,10 +1,13 @@
-package top.rongxiaoli.plugins.OsuBot.backend.osusig.backend.kotlinTypes
+package top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct
 
 import kotlinx.serialization.Serializable
 import lombok.AllArgsConstructor
 import lombok.Data
 
 class OsuSigEnum {
+    /**
+     * Osu gamemode. 
+     */
     @Data
     @Serializable
     @AllArgsConstructor
@@ -15,6 +18,10 @@ class OsuSigEnum {
         MANIA(3);
         private var gameMode = 0
     }
+
+    /**
+     * OsuSig tool background color.
+     */
     @Data
     @Serializable
     @AllArgsConstructor
@@ -30,6 +37,10 @@ class OsuSigEnum {
         PURPLE_RED("hexbb1177"),
         BLACK("hex000000");
     }
+
+    /**
+     * PP Show mode.
+     */
     @Data
     @Serializable
     @AllArgsConstructor

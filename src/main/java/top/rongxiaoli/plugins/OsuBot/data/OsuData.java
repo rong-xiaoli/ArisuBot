@@ -10,6 +10,7 @@ import top.rongxiaoli.plugins.OsuBot.backend.UserBaseData;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class OsuData extends JavaAutoSavePluginData implements PluginDataBase {
     public static final OsuData INSTANCE = new OsuData();
@@ -68,10 +69,21 @@ public class OsuData extends JavaAutoSavePluginData implements PluginDataBase {
      * @param userID User's ID.
      * @param userBaseData User's new data. Should not be null.
      */
-    public synchronized void setUserData(long userID, @NotNull UserBaseData userBaseData) {
+    public synchronized void setUserData(long userID, UserBaseData userBaseData) {
         Map<Long, UserBaseData> temp = OsuData.INSTANCE.userDataList.get();
-        if (!temp.containsKey(userID)) temp.replace(userID, userBaseData);
+        if (temp.containsKey(userID)) temp.replace(userID, userBaseData);
         else temp.put(userID, userBaseData);
         OsuData.INSTANCE.userDataList.set(temp);
+    }
+
+    /**
+     * Delete user from data. Throw {@code NoSuchElementException} if user is not found in data.
+     * @param userID User's QQ number.
+     * @throws NoSuchElementException Throws when user's QQ number is not found in data.
+     */
+    public synchronized void deleteUserData(long userID)  throws NoSuchElementException {
+        Map<Long, UserBaseData> t = OsuData.INSTANCE.userDataList.get();
+        if (t.containsKey(userID)) t.remove(userID);
+        else throw new NoSuchElementException("ID " + userID + " user not found. ");
     }
 }
