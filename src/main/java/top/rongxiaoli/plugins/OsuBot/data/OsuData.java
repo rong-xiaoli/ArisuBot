@@ -3,7 +3,6 @@ package top.rongxiaoli.plugins.OsuBot.data;
 import net.mamoe.mirai.console.data.Value;
 import net.mamoe.mirai.console.data.java.JavaAutoSavePluginData;
 import net.mamoe.mirai.utils.MiraiLogger;
-import org.jetbrains.annotations.NotNull;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginDataBase;
 import top.rongxiaoli.plugins.OsuBot.backend.UserBaseData;
@@ -42,7 +41,7 @@ public class OsuData extends JavaAutoSavePluginData implements PluginDataBase {
     @Override
     public void shutdown() {
         LOGGER.debug("Start shutdown process. ");
-        LOGGER.verbose(String.valueOf(INSTANCE.userDataList.get().size())); //Fixme: data is not getting recorded.
+        LOGGER.verbose(String.valueOf(INSTANCE.userDataList.get().size()));
         ArisuBot.INSTANCE.savePluginData(INSTANCE);
         LOGGER.debug("Shutdown process complete. ");
     }

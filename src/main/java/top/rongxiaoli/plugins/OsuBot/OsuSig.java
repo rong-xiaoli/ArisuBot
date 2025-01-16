@@ -109,35 +109,6 @@ public class OsuSig extends ArisuBotAbstractCompositeCommand {
 
     @SubCommand({"sigSetGameMode", "ssgm", "模式"})
     @Description("设置游戏模式")
-    public void setOsuSigGameMode(CommandContext context, OsuSigEnum.GameMode gameMode) {
-        if (!pluginStatus) return;
-        if (UserJudgeUtils.isConsoleCalling(context)) {
-            context.getSender().sendMessage("this command cannot be invoked from console! ");
-            return;
-        }
-        User user = context.getSender().getUser();
-        Contact contact = context.getSender().getSubject();
-        if (user == null || contact == null) {
-            context.getSender().sendMessage("用户为空！");
-            return;
-        }
-        long userID = user.getId();
-        if (userID == 0) {
-            LOGGER.warning("This command cannot be invoked in terminal! ");
-            return;
-        }
-        OsuSigBaseData oldData = OsuSigUtils.getBaseData(userID);
-        if (oldData == null) {
-            context.getSender().sendMessage("您尚未绑定用户！");
-            return;
-        }
-        OsuSigSettings settings = oldData.getOsuSigSettings();
-        settings.setGameMode(gameMode);
-        OsuSigBaseData newData = new OsuSigBaseData(settings);
-        OsuSigUtils.setBaseData(userID, newData);
-        context.getSender().sendMessage("已设置: " + gameMode);
-    }
-    @SubCommand({"sigSetGameMode", "ssgm", "模式"})
     public void setOsuSigGameMode(CommandContext context, String gameModeStr) {
         if (!pluginStatus) return;
         if (UserJudgeUtils.isConsoleCalling(context)) {
@@ -169,14 +140,14 @@ public class OsuSig extends ArisuBotAbstractCompositeCommand {
                 settings.setGameMode(OsuSigEnum.GameMode.CATCH);
             case "弹琴":
             case "mania":
-                settings.setGameMode(OsuSigEnum.GameMode.CATCH);
+                settings.setGameMode(OsuSigEnum.GameMode.MANIA);
             case "太鼓":
             case "taiko":
-                settings.setGameMode(OsuSigEnum.GameMode.CATCH);
+                settings.setGameMode(OsuSigEnum.GameMode.TAIKO);
             case "标准":
             case "standard":
             case "osu":
-                settings.setGameMode(OsuSigEnum.GameMode.CATCH);
+                settings.setGameMode(OsuSigEnum.GameMode.STANDARD);
         }
         OsuSigBaseData newData = new OsuSigBaseData(settings);
         OsuSigUtils.setBaseData(userID, newData);
@@ -227,6 +198,7 @@ public class OsuSig extends ArisuBotAbstractCompositeCommand {
         mcb.add(image);
         contact.sendMessage(mcb.build());
     }
+    // TODO: 2025/1/16 Add settings for other 4 options.
 
     /**
      * Manages the plugin's operational state.

@@ -12,12 +12,10 @@ import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
 import top.rongxiaoli.backend.Utils.UserJudgeUtils;
 import top.rongxiaoli.backend.interfaces.Plugin;
-import top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct.OsuSigBaseData;
 import top.rongxiaoli.plugins.OsuBot.backend.osusig.OsuSigUtils;
-import top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct.OsuSigEnum;
-import top.rongxiaoli.plugins.OsuBot.data.OsuData;
-import top.rongxiaoli.plugins.OsuBot.backend.UserBaseData;
+import top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct.OsuSigBaseData;
 import top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct.OsuSigSettings;
+import top.rongxiaoli.plugins.OsuBot.data.OsuData;
 import top.rongxiaoli.plugins.OsuBot.utils.OsuUtils;
 
 import java.util.NoSuchElementException;
@@ -30,7 +28,7 @@ public class OsuBot extends ArisuBotAbstractCompositeCommand {
     public static final OsuData DATA = new OsuData();
     public static final OsuBot INSTANCE = new OsuBot();
     public MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(OsuBot.class, "ArisuBot.OsuBot");
-    private AtomicInteger requestCounter = new AtomicInteger(0);
+    private final AtomicInteger requestCounter = new AtomicInteger(0);
     public OsuBot() {
         super("osu");
     }
@@ -74,11 +72,15 @@ public class OsuBot extends ArisuBotAbstractCompositeCommand {
             return;
         }
         ExternalResource resource = ExternalResource.create(Objects.requireNonNull(pictContent));
-        Image image = contact.uploadImage(resource);
-        mcb = new MessageChainBuilder();
-        mcb.add("osu!sig预览：");
-        mcb.add(image);
-        contact.sendMessage(mcb.build());
+        try {
+            Image image = contact.uploadImage(resource);
+            mcb = new MessageChainBuilder();
+            mcb.add("osu!sig预览：");
+            mcb.add(image);
+            contact.sendMessage(mcb.build());
+        } catch (IllegalArgumentException e) {
+            context.getSender().sendMessage("获取osu!sig失败，可能是最近没有成绩或用户名有误");
+        }
     }
     @SubCommand("name")
     @Description("查询你目前绑定的用户名")

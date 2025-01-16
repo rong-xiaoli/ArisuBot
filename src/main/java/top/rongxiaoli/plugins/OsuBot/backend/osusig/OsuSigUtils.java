@@ -11,12 +11,12 @@ import top.rongxiaoli.plugins.OsuBot.data.OsuData;
 import java.util.NoSuchElementException;
 
 public class OsuSigUtils {
-    public static final String API_Base = "https://osusig.lolicon.app/sig.php";
+    public static final String API_Base = "https://osusig.lolicon.app/sig.php?";
     public static String getURL(@NotNull String userName, @NotNull OsuSigSettings settings) throws IllegalArgumentException {
         StringBuilder builder = new StringBuilder();
         builder.append(API_Base);
         if (userName.isEmpty()) throw new IllegalArgumentException("Argument \"username\" is empty. ");
-        builder.append("?uname=").append(userName);
+        builder.append("uname=").append(userName);
         builder.append("&mode=").append(settings.component1().getMode());           // Play mode.
         if (settings.component2().getShowMethod() != -1)
             builder.append("&pp=").append(settings.component2().getShowMethod());   // PP show mode.

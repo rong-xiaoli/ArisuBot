@@ -1,7 +1,8 @@
 package top.rongxiaoli.backend.Commands;
 
 import net.mamoe.mirai.console.command.java.JCompositeCommand;
-import net.mamoe.mirai.utils.MiraiLogger;import org.jetbrains.annotations.NotNull;
+import net.mamoe.mirai.utils.MiraiLogger;
+import org.jetbrains.annotations.NotNull;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
