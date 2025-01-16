@@ -2,8 +2,6 @@ package top.rongxiaoli.plugins.OsuBot.backend.osuAPI.utils;
 
 import top.rongxiaoli.plugins.OsuBot.backend.osuAPI.struct.OAuthRequest;
 
-public class OAuthTokenRequester {
-    public OAuthRequest request;
 /**
  * 用于请求 OAuth 令牌的工具类。
  * 支持通过 OAuthRequest 对象或独立参数构建请求。
