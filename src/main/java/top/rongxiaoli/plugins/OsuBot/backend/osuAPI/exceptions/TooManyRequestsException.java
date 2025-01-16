@@ -1,7 +1,11 @@
 package top.rongxiaoli.plugins.OsuBot.backend.osuAPI.exceptions;
 
 public class TooManyRequestsException extends Exception {
-    public int count;
+    private final int count;
+
+    public int getCount() {
+        return count;
+    }
     public TooManyRequestsException(int count) {
         this.count = count;
     }

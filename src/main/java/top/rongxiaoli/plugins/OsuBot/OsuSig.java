@@ -18,6 +18,7 @@ import top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct.OsuSigSettings;
 import top.rongxiaoli.plugins.OsuBot.data.OsuData;
 import top.rongxiaoli.plugins.OsuBot.utils.OsuUtils;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -25,7 +26,6 @@ import java.util.Objects;
 public class OsuSig extends ArisuBotAbstractCompositeCommand {
     private volatile boolean pluginStatus = false;
     public static OsuSig INSTANCE = new OsuSig();
-    public static final OsuData DATA = new OsuData();
     public MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(OsuBot.class, "ArisuBot.OsuSig");
     public OsuSig() {
         super("osusig", "sig");
@@ -503,8 +503,7 @@ public class OsuSig extends ArisuBotAbstractCompositeCommand {
             LOGGER.warning("Got a null response: " + OsuSigUtils.getURL(username, base.getOsuSigSettings()));
             return;
         }
-        ExternalResource resource = ExternalResource.create(Objects.requireNonNull(pictContent));
-        try {
+        try (ExternalResource resource = ExternalResource.create(Objects.requireNonNull(pictContent))){
             Image image = contact.uploadImage(resource);
             mcb = new MessageChainBuilder();
             mcb.add("用户" + username + "：");
@@ -512,6 +511,8 @@ public class OsuSig extends ArisuBotAbstractCompositeCommand {
             contact.sendMessage(mcb.build());
         } catch (IllegalArgumentException e) {
             context.getSender().sendMessage("获取osu!sig失败，可能是最近没有成绩或用户名有误");
+        } catch (IOException e) {
+            context.getSender().sendMessage("获取osu!sig失败，IO异常");
         }
     }
 

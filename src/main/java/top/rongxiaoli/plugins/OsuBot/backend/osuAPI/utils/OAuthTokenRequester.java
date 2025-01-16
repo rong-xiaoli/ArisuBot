@@ -3,7 +3,10 @@ package top.rongxiaoli.plugins.OsuBot.backend.osuAPI.utils;
 import top.rongxiaoli.plugins.OsuBot.backend.osuAPI.struct.OAuthRequest;
 
 public class OAuthTokenRequester {
-    public OAuthRequest request;
+    private final OAuthRequest request;
+    public OAuthRequest getRequest() {
+        return request;
+    }
     public OAuthTokenRequester(OAuthRequest r) {
         request = r;
     }
