@@ -7,6 +7,9 @@ import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
 import top.rongxiaoli.backend.interfaces.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Objects;
@@ -53,7 +56,8 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         }
         GregorianCalendar newSign = ((GregorianCalendar) Calendar.getInstance());
         int newCombo;
-        if (newSign.getTimeInMillis() - lastSign.getTimeInMillis() >= 86400) {
+        LocalDate oldDate = lastSign.toZonedDateTime().toLocalDate(), newDate = newSign.toZonedDateTime().toLocalDate();
+        if (oldDate.plusDays(1).isEqual(newDate)) {
             newCombo = 1;
         } else newCombo = signCombo + 1;
         signCount.addAndGet(1);
