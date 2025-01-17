@@ -97,8 +97,12 @@ public class Broadcast extends ArisuBotAbstractCompositeCommand {
             }, delay, TimeUnit.MILLISECONDS);
             LOGGER.verbose("Send to Group: " + singleGroup.getId());
         }
-        isBroadcasting = false;
-        context.getSender().sendMessage("广播结束，共发送了" + friendsList.size() + "个好友，共" + groupList.size() + "个群。");
+        executor.schedule(() -> {
+            context.getSender().sendMessage("广播结束。");
+            isBroadcasting = false;
+        }, delay + 100, TimeUnit.MILLISECONDS);
+        context.getSender().sendMessage("广播共发送了" + friendsList.size() + "个好友，共" + groupList.size() + "个群。");
+
     }
     @SubCommand
     public void cancel(CommandContext context) {
