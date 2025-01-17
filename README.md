@@ -15,24 +15,15 @@ chat-command是使用CommandSender接口接收客户端命令必备的插件。�
 
 LuckPerms在MC圈子里是一个非常热门的权限管理器，以简洁易懂的管理界面为人熟知。这个插件使用LuckPerms编辑器控制mirai-console的权限，可以在网页上编辑，也可以使用LuckPerms的其它编辑方式编辑。
 
-## Todos
-- [ ] 自动加入
-- [x] 机器人管理命令
-- [x] 广播
-- [x] 每日签到
-- [x] 紧急停止
-- [x] 随机图片
-- [x] Ping
-- [x] 戳一戳
-- [ ] 复读姬
-- [x] 今日运势
-- [ ] 抽奖
-- [ ] 财富榜
-
 ## 贡献者
 <a href="https://github.com/rong-xiaoli/ArisuBot/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=rong-xiaoli/ArisuBot" />
 </a>
+
+### 特殊致谢
+
+非常感谢 神代綺凛[@Tsuk1ko](https://github.com/Tsuk1ko) 大佬写的[lolicon API](https://api.lolicon.app/#/setu?id=%e9%9a%8f%e6%9c%ba%e8%89%b2%e5%9b%be)和改写的[osu!sig](https://osusig.lolicon.app/)。
+没有这两个API就没有ArisuBot，以及它的前生RongXiaoliBot。
 
 Repo stats
 ---

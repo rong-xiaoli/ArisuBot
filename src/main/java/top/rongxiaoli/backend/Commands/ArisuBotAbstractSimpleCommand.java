@@ -1,7 +1,5 @@
 package top.rongxiaoli.backend.Commands;
 
-import net.mamoe.mirai.console.command.CommandContext;
-import net.mamoe.mirai.console.command.CommandOwner;
 import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;

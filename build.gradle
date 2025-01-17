@@ -6,6 +6,8 @@ plugins {
 }
 dependencies {
     implementation 'cn.hutool:hutool-all:5.8.35'
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
 }
 group = 'top.rongxiaoli'
 version = '0.0.1'
@@ -17,4 +19,12 @@ repositories {
 
 mirai {
     jvmTarget JavaVersion.VERSION_1_8
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc).configureEach {
+    options.encoding = 'UTF-8'
 }

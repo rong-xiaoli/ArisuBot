@@ -1,6 +1,5 @@
 package top.rongxiaoli;
 
-import cn.hutool.Hutool;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.TimeInterval;
 import net.mamoe.mirai.console.extension.PluginComponentStorage;

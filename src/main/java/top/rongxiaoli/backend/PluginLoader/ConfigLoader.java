@@ -1,8 +1,6 @@
 package top.rongxiaoli.backend.PluginLoader;
 
-import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginConfigBase;
-import top.rongxiaoli.plugins.PokeReact.backend.PokeReactTextConfig;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
