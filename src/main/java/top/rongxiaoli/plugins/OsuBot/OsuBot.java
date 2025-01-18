@@ -35,7 +35,7 @@ public class OsuBot extends ArisuBotAbstractCompositeCommand {
     }
     @SubCommand("bind")
     @Description("将osu!账号绑定至你的QQ号。")
-    public void bindUserName(CommandContext context, String username) {
+    public void bindUserName(CommandContext context, String... unameArray) {
         if (!pluginStatus) return;
         if (UserJudgeUtils.isConsoleCalling(context)) {
             context.getSender().sendMessage("this command cannot be invoked from console! ");
@@ -48,6 +48,12 @@ public class OsuBot extends ArisuBotAbstractCompositeCommand {
             return;
         }
         long userID = user.getId();
+        StringBuilder usernameBuilder = new StringBuilder();
+        for (String uname :
+                unameArray) {
+            usernameBuilder.append(" ").append(uname);
+        }
+        String username = usernameBuilder.toString().trim();
         MessageChainBuilder mcb = new MessageChainBuilder();
         mcb.add(new QuoteReply(context.getOriginalMessage()));
         mcb.add("你绑定了：" + username);
