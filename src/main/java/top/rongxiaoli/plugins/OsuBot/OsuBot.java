@@ -48,12 +48,7 @@ public class OsuBot extends ArisuBotAbstractCompositeCommand {
             return;
         }
         long userID = user.getId();
-        StringBuilder usernameBuilder = new StringBuilder();
-        for (String uname :
-                unameArray) {
-            usernameBuilder.append(" ").append(uname);
-        }
-        String username = usernameBuilder.toString().trim();
+        String username = String.join(" ", unameArray).trim();
         MessageChainBuilder mcb = new MessageChainBuilder();
         mcb.add(new QuoteReply(context.getOriginalMessage()));
         mcb.add("你绑定了：" + username);
