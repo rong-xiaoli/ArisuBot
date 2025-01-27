@@ -13,10 +13,6 @@ public class OAuthRequest {
      */
     private String clientSecret;
     /**
-     * The code you received.
-     */
-    private String code;
-    /**
      * This must always be authorization_code
      */
     private String grantType;

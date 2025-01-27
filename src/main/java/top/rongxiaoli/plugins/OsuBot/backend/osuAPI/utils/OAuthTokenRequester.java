@@ -22,8 +22,7 @@ public class OAuthTokenRequester {
         }
         request = new OAuthRequest();
         request.setClientId(clientID);
-        request.setCode(apiCode);
         request.setRedirectUri(redirectUri);
-        request.setGrantType("authorization_code");
+        request.setGrantType("client_credentials");
     }
 }
