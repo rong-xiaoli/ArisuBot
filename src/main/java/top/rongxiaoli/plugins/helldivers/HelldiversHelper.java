@@ -1,20 +1,20 @@
 package top.rongxiaoli.plugins.helldivers;
 
 import net.mamoe.mirai.console.command.CommandContext;
-import org.jetbrains.annotations.NotNull;
+import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
-import top.rongxiaoli.backend.Utils.UserJudgeUtils;
 import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.plugins.helldivers.backend.Constants;
 
 @Plugin(name = "HelldiversHelper")
 public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
+    private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(HelldiversHelper.class, "ArisuBot.HelldiversHelper");
     private volatile boolean pluginStatus = false;
     public HelldiversHelper() {
         super("helldivers", "Helldivers", "HD2", "hd2");
     }
     @SubCommand({"notice", "通知"})
     public void getLatestNotice(CommandContext context) {
-
     }
 
     /**
@@ -22,7 +22,9 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
      */
     @Override
     public void load() {
-        super.load();
+        LOGGER.debug("Helldiver helper loading. ");
+        enablePlugin();
+        LOGGER.debug("Helldiver helper loaded. ");
     }
 
     /**
@@ -30,7 +32,9 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
      */
     @Override
     public void reload() {
-        super.reload();
+        LOGGER.debug("Helldiver helper reloading. ");
+        enablePlugin();
+        LOGGER.debug("Helldiver helper reloaded. ");
     }
 
     /**
@@ -38,7 +42,9 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
      */
     @Override
     public void shutdown() {
-        super.shutdown();
+        LOGGER.debug("Helldiver helper shutting down. ");
+        disablePlugin();
+        LOGGER.debug("Helldiver helper shut down. ");
     }
 
     /**
@@ -46,7 +52,8 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
      */
     @Override
     public void saveData() {
-        super.saveData();
+        LOGGER.debug("Helldiver Helper data saving. ");
+        LOGGER.debug("Helldiver Helper data saved. ");
     }
 
     /**
@@ -54,7 +61,8 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
      */
     @Override
     public void reloadData() {
-        super.reloadData();
+        LOGGER.debug("Helldiver Helper data reloading. ");
+        LOGGER.debug("Helldiver Helper data reloaded. ");
     }
 
     /**
