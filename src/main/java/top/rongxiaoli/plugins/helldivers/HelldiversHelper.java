@@ -6,6 +6,8 @@ import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
 import top.rongxiaoli.backend.interfaces.Plugin;
 import top.rongxiaoli.plugins.helldivers.backend.Constants;
+import top.rongxiaoli.plugins.helldivers.backend.apifetch.NewsFeedHelper;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.Language;
 import top.rongxiaoli.plugins.helldivers.config.HD2Config;
 
 @Plugin(name = "HelldiversHelper")
@@ -20,7 +22,7 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
     }
     @SubCommand({"notice", "通知"})
     public void getLatestNotice(CommandContext context) {
-
+        context.getSender().sendMessage(NewsFeedHelper.getLatestNews());
     }
     /**
      * Load method. First time loading.
