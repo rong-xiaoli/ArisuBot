@@ -41,7 +41,6 @@ public class OsuData extends JavaAutoSavePluginData implements PluginDataBase {
     @Override
     public void shutdown() {
         LOGGER.debug("Start shutdown process. ");
-        LOGGER.verbose(String.valueOf(INSTANCE.userDataList.get().size()));
         ArisuBot.INSTANCE.savePluginData(INSTANCE);
         LOGGER.debug("Shutdown process complete. ");
     }

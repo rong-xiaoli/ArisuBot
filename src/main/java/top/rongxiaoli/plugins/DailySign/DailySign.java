@@ -56,10 +56,13 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         }
         GregorianCalendar newSign = ((GregorianCalendar) Calendar.getInstance());
         int newCombo;
-        LocalDate oldDate = lastSign.toZonedDateTime().toLocalDate(), newDate = newSign.toZonedDateTime().toLocalDate();
-        if (oldDate.plusDays(1).isEqual(newDate)) {
-            newCombo = 1;
-        } else newCombo = signCombo + 1;
+        LocalDateTime oldDate = lastSign.toZonedDateTime().toLocalDateTime(), newDate = newSign.toZonedDateTime().toLocalDateTime();
+        LocalDateTime temp = oldDate.plusDays(1);
+        LOGGER.verbose(temp.toString());
+        LOGGER.verbose(newDate.toString());
+        if (temp.getYear() == newDate.getYear() && temp.getMonth() == newDate.getMonth() && temp.getDayOfMonth() == newDate.getDayOfMonth()) {
+            newCombo = signCombo + 1;
+        } else newCombo = 1;
         signCount.addAndGet(1);
         synchronized (DATA) {
             DATA.setLastSignDate(userID, newSign.getTimeInMillis());
@@ -143,6 +146,7 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         DATA.reload();
         LOGGER.verbose("Data reload complete. ");
         LOGGER.verbose("No config needed. ");
+        enablePlugin();
         LOGGER.debug("DailySign reloaded. ");
     }
 
