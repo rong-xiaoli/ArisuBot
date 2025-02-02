@@ -20,7 +20,7 @@ public class APIChecker {
         }
     }
     private static String getRawResponse() throws HttpException {
-        HttpRequest req = HttpRequest.get(Constants.HD2API.API_ROOT);
+        HttpRequest req = HttpRequest.get(Constants.HD2API.API_DOMAIN);
         req.addHeaders(HelldiversHelper.CONFIG.getXSuperClientMap());
         req.addHeaders(HelldiversHelper.CONFIG.getXSuperContactMap());
         try(HttpResponse response = req.execute()){

@@ -8,6 +8,7 @@ import top.rongxiaoli.plugins.helldivers.backend.Constants;
 import top.rongxiaoli.plugins.helldivers.backend.datatype.Language;
 import top.rongxiaoli.plugins.helldivers.backend.datatype.NewsFeedItem;
 
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,8 @@ public class NewsFeedHelper {
         return getLatestNews(Language.ZHS);
     }
     public static String getLatestNews(Language language) {
-        String apiURL = Constants.HD2API.API_ROOT + Constants.HD2API.API_RAW_ROOT + Constants.HD2API.SE_NEWS_API;
-        HttpRequest req = HttpRequest.get(apiURL);
+        String apiUrl = Constants.HD2API.API_DOMAIN + Constants.HD2API.API_RAW_ROOT + Constants.HD2API.RAW_SE_NEWS_API;
+        HttpRequest req = HttpRequest.get(apiUrl);
         Map<String, String> headerMap = new HashMap<>(language.toHeaderMap());
         headerMap.putAll(HelldiversHelper.CONFIG.getXSuperClientMap());
         headerMap.putAll(HelldiversHelper.CONFIG.getXSuperContactMap());

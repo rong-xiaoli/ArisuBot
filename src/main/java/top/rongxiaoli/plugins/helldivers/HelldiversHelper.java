@@ -3,15 +3,19 @@ package top.rongxiaoli.plugins.helldivers;
 import net.mamoe.mirai.console.command.CommandContext;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.MiraiLogger;
-import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
 import top.rongxiaoli.backend.interfaces.Plugin;
-import top.rongxiaoli.plugins.helldivers.backend.Constants;
 import top.rongxiaoli.plugins.helldivers.backend.apifetch.APIChecker;
+import top.rongxiaoli.plugins.helldivers.backend.apifetch.DSSHelper;
 import top.rongxiaoli.plugins.helldivers.backend.apifetch.NewsFeedHelper;
 import top.rongxiaoli.plugins.helldivers.backend.apifetch.WarInfoHelper;
 import top.rongxiaoli.plugins.helldivers.backend.datatype.Language;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.SpaceStation2;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.War;
 import top.rongxiaoli.plugins.helldivers.config.HD2Config;
+
+import java.util.HashMap;
+import java.util.List;
 
 @Plugin(name = "HelldiversHelper")
 public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
@@ -33,23 +37,44 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
     }
     @SubCommand({"stats","统计"})
     public void getCurrentStats(CommandContext context) {
-        WarInfoHelper helper = new WarInfoHelper();
+        War war = WarInfoHelper.getWarInfo(Language.ZHS);
         MessageChainBuilder mcb = new MessageChainBuilder();
-        mcb.add("目前绝地潜兵们的胜率为" + helper.getMissionSuccessRate() + "%\n");
-        mcb.add("赢下了" + helper.getMissionsWon() + "个任务\n");
-        mcb.add("输掉了" + helper.getMissionsLost() + "个任务\n");
-        mcb.add("共击杀终结族" + helper.getTerminidKills() + "只\n");
-        mcb.add("共击杀光能者" + helper.getIlluminateKills() + "个\n");
-        mcb.add("共击杀机器人" + helper.getAutomatonKills() + "个\n");
-        mcb.add("共损失潜兵" + helper.getDeathCount() + "人\n");
+        mcb.add("目前绝地潜兵们的胜率为" + war.getStatistics().getMissionSuccessRate() + "%\n");
+        mcb.add("赢下了" + war.getStatistics().getMissionsWon() + "个任务\n");
+        mcb.add("输掉了" + war.getStatistics().getMissionsLost() + "个任务\n");
+        mcb.add("共击杀终结族" + war.getStatistics().getTerminidKills() + "只\n");
+        mcb.add("共击杀光能者" + war.getStatistics().getIlluminateKills() + "个\n");
+        mcb.add("共击杀机器人" + war.getStatistics().getAutomatonKills() + "个\n");
+        mcb.add("共损失潜兵" + war.getStatistics().getDeaths() + "人\n");
         context.getSender().sendMessage(mcb.build());
     }
     @SubCommand({"info", "信息"})
     public void getCurrentInfo(CommandContext context) {
-        WarInfoHelper helper = new WarInfoHelper();
+        War war = WarInfoHelper.getWarInfo(Language.ZHS);
         MessageChainBuilder mcb = new MessageChainBuilder();
-        mcb.add("当前影响因数" + helper.getImpactMultiplier() + "\n");
-        mcb.add("当前活跃潜兵" + helper.getPresentPlayerCount() + "人\n");
+        mcb.add("当前影响因数" + war.getImpactMultiplier() + "\n");
+        mcb.add("当前活跃潜兵" + war.getStatistics().getPlayerCount() + "人\n");
+        context.getSender().sendMessage(mcb.build());
+    }
+    @SubCommand({"dss", "空间站"})
+    public void getDSSInfo(CommandContext context) {
+        List<SpaceStation2> dssList = DSSHelper.getDSSList(Language.ZHS);
+        if (dssList.isEmpty()) {
+            context.getSender().sendMessage("目前没有DSS，或者DSS处于异常情况");
+            return;
+        }
+        MessageChainBuilder mcb = new MessageChainBuilder();
+        mcb.add("目前共有" + dssList.size() + "个空间站在线：\n");
+        for (SpaceStation2 station :
+                dssList) {
+            if (station.getPlanet() == null) {
+                mcb.add("ID " + station.getId32() + "目前异常（行星名为空）\n\n");
+            } else {
+                mcb.add("ID" + station.getId32() + "空间站目前位于" + station.getPlanet().getName() + "\n");
+                mcb.add("目前星球持有方为：" + station.getPlanet().getCurrentOwner() + "\n");
+                mcb.add("FTL目标投票截止日期为" + station.getElectionEnd() + "\n\n");
+            }
+        }
         context.getSender().sendMessage(mcb.build());
     }
     /**
