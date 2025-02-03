@@ -5,10 +5,9 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.json.JSONUtil;
 import top.rongxiaoli.plugins.helldivers.HelldiversHelper;
 import top.rongxiaoli.plugins.helldivers.backend.Constants;
-import top.rongxiaoli.plugins.helldivers.backend.datatype.Language;
-import top.rongxiaoli.plugins.helldivers.backend.datatype.NewsFeedItem;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.hd2.Language;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.hd2.NewsFeedItem;
 
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

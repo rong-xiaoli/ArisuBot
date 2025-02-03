@@ -6,8 +6,8 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.json.JSONUtil;
 import top.rongxiaoli.plugins.helldivers.HelldiversHelper;
 import top.rongxiaoli.plugins.helldivers.backend.Constants;
-import top.rongxiaoli.plugins.helldivers.backend.datatype.Language;
-import top.rongxiaoli.plugins.helldivers.backend.datatype.War;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.hd2.Language;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.hd2.War;
 import top.rongxiaoli.plugins.helldivers.backend.utils.HD2DateConverter;
 
 import java.time.ZonedDateTime;

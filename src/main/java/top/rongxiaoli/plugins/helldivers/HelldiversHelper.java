@@ -9,9 +9,12 @@ import top.rongxiaoli.plugins.helldivers.backend.apifetch.APIChecker;
 import top.rongxiaoli.plugins.helldivers.backend.apifetch.DSSHelper;
 import top.rongxiaoli.plugins.helldivers.backend.apifetch.NewsFeedHelper;
 import top.rongxiaoli.plugins.helldivers.backend.apifetch.WarInfoHelper;
-import top.rongxiaoli.plugins.helldivers.backend.datatype.Language;
-import top.rongxiaoli.plugins.helldivers.backend.datatype.SpaceStation2;
-import top.rongxiaoli.plugins.helldivers.backend.datatype.War;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.diveharder.Cost;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.diveharder.DSSInfo;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.diveharder.TacticalAction;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.hd2.Language;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.hd2.SpaceStation2;
+import top.rongxiaoli.plugins.helldivers.backend.datatype.hd2.War;
 import top.rongxiaoli.plugins.helldivers.config.HD2Config;
 
 import java.util.HashMap;
@@ -58,7 +61,8 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
     }
     @SubCommand({"dss", "空间站"})
     public void getDSSInfo(CommandContext context) {
-        List<SpaceStation2> dssList = DSSHelper.getDSSList(Language.ZHS);
+        List<SpaceStation2> dssList = DSSHelper.getDSSListHD2API(Language.ZHS);
+        HashMap<Long, DSSInfo> dhDssList = DSSHelper.getDSSListDiveHarderAPI();
         if (dssList.isEmpty()) {
             context.getSender().sendMessage("目前没有DSS，或者DSS处于异常情况");
             return;
@@ -70,8 +74,11 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
             if (station.getPlanet() == null) {
                 mcb.add("ID " + station.getId32() + "目前异常（行星名为空）\n\n");
             } else {
+                DSSInfo info = dhDssList.get(station.getId32());
                 mcb.add("ID" + station.getId32() + "空间站目前位于" + station.getPlanet().getName() + "\n");
                 mcb.add("目前星球持有方为：" + station.getPlanet().getCurrentOwner() + "\n");
+                if (info == null) mcb.add("DiveHarder API 返回值无效，无法检查战备\n");
+                else mcb.add(getTacticalActionsSummary(info));
                 mcb.add("FTL目标投票截止日期为" + station.getElectionEnd() + "\n\n");
             }
         }
@@ -161,5 +168,18 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
     @Override
     public boolean pluginStatus() {
         return pluginStatus;
+    }
+
+    private String getTacticalActionsSummary(DSSInfo info) {
+        List<TacticalAction> actions = info.getTacticalActions();
+        StringBuilder builder = new StringBuilder().append("目前进度：\n");
+        for (TacticalAction action :
+                actions) {
+            if (action == null) continue;
+            builder.append("战术行动：").append(action.getName()).append("\n");
+            for (Cost cost : action.getCost())
+                builder.append(cost.getId()).append("进度").append(cost.getCurrentValue() / cost.getTargetValue() * 100).append("%\n");
+        }
+        return builder.toString();
     }
 }

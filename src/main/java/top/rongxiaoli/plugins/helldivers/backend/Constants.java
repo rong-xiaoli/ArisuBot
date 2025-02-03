@@ -10,4 +10,10 @@ public class Constants {
         public static final String V1_DSS_LIST_API = "/space-stations";
         public static final String V1_DSS_QUERY_API_PREFIX = "/space/stations/";
     }
+    public static class DiveHarderAPI {
+        public static final String API_DOMAIN = "https://api.diveharder.com";
+        public static final String API_RAW_ROOT = "/raw";
+        public static final String API_V1_ROOT = "/v1";
+        public static final String RAW_GET_DSS_API = "/dss";
+    }
 }

@@ -1,4 +1,4 @@
-package top.rongxiaoli.plugins.helldivers.backend.datatype;
+package top.rongxiaoli.plugins.helldivers.backend.datatype.hd2;
 
 /**
  * Hazard，Describes an environmental hazard that can be present on a Planet.

@@ -1,7 +1,7 @@
 
 // Statistics.java
 
-package top.rongxiaoli.plugins.helldivers.backend.datatype;
+package top.rongxiaoli.plugins.helldivers.backend.datatype.hd2;
 
 /**
  * The statistics available for the galaxy wide war effort.
