@@ -10,6 +10,7 @@ import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Objects;
@@ -57,12 +58,9 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         GregorianCalendar newSign = ((GregorianCalendar) Calendar.getInstance());
         int newCombo;
         LocalDateTime oldDate = lastSign.toZonedDateTime().toLocalDateTime(), newDate = newSign.toZonedDateTime().toLocalDateTime();
-        LocalDateTime temp = oldDate.plusDays(1);
-        LOGGER.verbose(temp.toString());
-        LOGGER.verbose(newDate.toString());
-        if (temp.getYear() == newDate.getYear() && temp.getMonth() == newDate.getMonth() && temp.getDayOfMonth() == newDate.getDayOfMonth()) {
-            newCombo = signCombo + 1;
-        } else newCombo = 1;
+        LocalDateTime nextExpectedDate = oldDate.plusDays(1).truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime currentDate = newDate.truncatedTo(ChronoUnit.DAYS);
+        newCombo = nextExpectedDate.isEqual(currentDate) ? signCombo + 1 : 1;
         signCount.addAndGet(1);
         synchronized (DATA) {
             DATA.setLastSignDate(userID, newSign.getTimeInMillis());
