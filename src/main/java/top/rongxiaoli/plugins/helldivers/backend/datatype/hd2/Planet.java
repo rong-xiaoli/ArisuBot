@@ -12,69 +12,69 @@ public class Planet {
     /**
      * The unique identifier ArrowHead assigned to this planet.
      */
-    public int index;
+    private int index;
     /**
      * The name of the planet, as shown in game.
      */
-    public String name;
+    private String name;
     /**
      * The name of the sector the planet is in, as shown in game.
      */
-    public String sector;
+    private String sector;
     /**
      * The biome this planet has.
      */
-    public Biome biome;
+    private Biome biome;
     /**
      * All Hazards that are applicable to this planet.
      */
-    public List<Hazard> hazards;
+    private List<Hazard> hazards;
     /**
      * A hash assigned to the planet by ArrowHead, purpose unknown.
      */
-    public long hash;
+    private long hash;
     /**
      * The coordinates of this planet on the galactic war map.
      */
-    public Position position;
+    private Position position;
     /**
      * A list of Index of all the planets to which this planet is connected.
      */
-    public List<Integer> waypoints;
+    private List<Integer> waypoints;
     /**
      * The maximum health pool of this planet.
      */
-    public long maxHealth;
+    private long maxHealth;
     /**
      * The current planet this planet has.
      */
-    public long health;
+    private long health;
     /**
      * Whether this planet is disabled or not, as assigned by ArrowHead.
      */
-    public boolean disabled;
+    private boolean disabled;
     /**
      * The faction that originally owned the planet.
      */
-    public String initialOwner;
+    private String initialOwner;
     /**
      * The faction that currently controls the planet.
      */
-    public String currentOwner;
+    private String currentOwner;
     /**
      * How much the planet regenerates per second if left alone.
      */
-    public double regenPerSecond;
+    private double regenPerSecond;
     /**
      * Information on the active event ongoing on this planet, if one is active.
      */
-    public Event event;
+    private Event event;
     /**
      * A set of statistics scoped to this planet.
      */
-    public Statistics statistics;
+    private Statistics statistics;
     /**
      * A list of Index integers that this planet is currently attacking.
      */
-    public List<Integer> attacking;
+    private List<Integer> attacking;
 }

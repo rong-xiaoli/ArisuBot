@@ -7,10 +7,16 @@ import java.time.ZonedDateTime;
 
 public class HD2DateConverter {
     public static ZonedDateTime convert(OffsetDateTime beforeConvert, OffsetDateTime delta) {
-        if (beforeConvert.getOffset() == delta.getOffset()) return ZonedDateTime.from(LocalDateTime.ofEpochSecond(beforeConvert.toEpochSecond() + delta.toEpochSecond(),
-                0,
-                beforeConvert.getOffset()));
+        if (beforeConvert.getOffset() == delta.getOffset())
+            return ZonedDateTime.from(
+                    LocalDateTime.ofEpochSecond(beforeConvert.toEpochSecond() + delta.toEpochSecond(), 0, beforeConvert.getOffset()));
+        long totalSeconds = beforeConvert.toEpochSecond() + delta.toEpochSecond();
         ZoneOffset offset = ZoneOffset.ofTotalSeconds(delta.getOffset().getTotalSeconds());
-        return ZonedDateTime.from(LocalDateTime.ofEpochSecond(beforeConvert.toEpochSecond() + delta.toEpochSecond(), 0, offset));
+        return ZonedDateTime.from(
+                LocalDateTime.ofEpochSecond(
+                        totalSeconds,
+                        0,
+                        offset)
+        );
     }
 }

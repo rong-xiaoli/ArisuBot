@@ -5,11 +5,11 @@ package top.rongxiaoli.plugins.helldivers.backend.datatype.diveharder;
 
 @lombok.Data
 public class Cost {
-    public double currentValue;
-    public long deltaPerSecond;
-    public String id;
-    public long itemMixId;
-    public long maxDonationAmount;
-    public long maxDonationPeriodSeconds;
-    public double targetValue;
+    private double currentValue;
+    private long deltaPerSecond;
+    private String id;
+    private long itemMixId;
+    private long maxDonationAmount;
+    private long maxDonationPeriodSeconds;
+    private double targetValue;
 }

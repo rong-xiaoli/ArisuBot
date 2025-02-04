@@ -15,26 +15,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WarInfoHelper {
-    public static War getWarInfo(Language language) throws HttpException {
+    private static HttpResponse executeWarRequest(Language language) {
         String apiUrl = Constants.HD2API.API_DOMAIN + Constants.HD2API.API_V1_ROOT + Constants.HD2API.V1_WAR_STATE_API;
-        HttpRequest req = HttpRequest.get(apiUrl);
         Map<String, String> headerMap = new HashMap<>(language.toHeaderMap());
+        HttpRequest req = HttpRequest.get(apiUrl);
         headerMap.putAll(HelldiversHelper.CONFIG.getXSuperClientMap());
         headerMap.putAll(HelldiversHelper.CONFIG.getXSuperContactMap());
         req.addHeaders(headerMap);
-        try(HttpResponse response = req.execute()) {
+        HttpResponse response = req.execute();
+        if (response.getStatus() != 200) {
+            throw new HttpException("API request failed with status: " + response.getStatus());
+        }
+        return response;
+    }
+
+    public static War getWarInfo(Language language) throws HttpException {
+        try(HttpResponse response = executeWarRequest(language)) {
             String jsonStr = response.body();
             return JSONUtil.toBean(jsonStr, War.class);
         }
     }
     public static ZonedDateTime getWarNowDateTime() throws HttpException {
-        String apiUrl = Constants.HD2API.API_DOMAIN + Constants.HD2API.API_V1_ROOT + Constants.HD2API.V1_WAR_STATE_API;
-        HttpRequest req = HttpRequest.get(apiUrl);
-        Map<String, String> headerMap = new HashMap<>(Language.ZHS.toHeaderMap());
-        headerMap.putAll(HelldiversHelper.CONFIG.getXSuperClientMap());
-        headerMap.putAll(HelldiversHelper.CONFIG.getXSuperContactMap());
-        req.addHeaders(headerMap);
-        try(HttpResponse response = req.execute()) {
+        try(HttpResponse response = executeWarRequest(Language.ZHS)) {
             String jsonStr = response.body();
             War war = JSONUtil.toBean(jsonStr, War.class);
             return HD2DateConverter.convert(war.getStarted(), war.getNow());

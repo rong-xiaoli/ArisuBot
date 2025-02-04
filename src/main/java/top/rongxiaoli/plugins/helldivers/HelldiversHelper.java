@@ -17,6 +17,7 @@ import top.rongxiaoli.plugins.helldivers.backend.datatype.hd2.SpaceStation2;
 import top.rongxiaoli.plugins.helldivers.backend.datatype.hd2.War;
 import top.rongxiaoli.plugins.helldivers.config.HD2Config;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,7 +37,11 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
             context.getSender().sendMessage("目前HellDivers 2 API暂不可用，请稍后再试");
             return;
         }
-        context.getSender().sendMessage(NewsFeedHelper.getLatestNews());
+        try {
+            context.getSender().sendMessage(NewsFeedHelper.getLatestNews());
+        } catch (IOException e) {
+            context.getSender().sendMessage("当前HellDivers 2 API暂不可用");
+        }
     }
     @SubCommand({"stats","统计"})
     public void getCurrentStats(CommandContext context) {
@@ -61,8 +66,19 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
     }
     @SubCommand({"dss", "空间站"})
     public void getDSSInfo(CommandContext context) {
-        List<SpaceStation2> dssList = DSSHelper.getDSSListHD2API(Language.ZHS);
-        HashMap<Long, DSSInfo> dhDssList = DSSHelper.getDSSListDiveHarderAPI();
+        List<SpaceStation2> dssList = null;
+        try {
+            dssList = DSSHelper.getDSSListHD2API(Language.ZHS);
+        } catch (IOException e) {
+            context.getSender().sendMessage("目前HD2API无法访问，无法查看空间站");
+            return;
+        }
+        HashMap<Long, DSSInfo> dhDssList = null;
+        try {
+            dhDssList = DSSHelper.getDSSListDiveHarderAPI();
+        } catch (IOException e) {
+            context.getSender().sendMessage("目前DiveHarder API无法访问，无法查看行动");
+        }
         if (dssList.isEmpty()) {
             context.getSender().sendMessage("目前没有DSS，或者DSS处于异常情况");
             return;
@@ -177,8 +193,10 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
                 actions) {
             if (action == null) continue;
             builder.append("战术行动：").append(action.getName()).append("\n");
-            for (Cost cost : action.getCost())
-                builder.append(cost.getId()).append("进度").append(cost.getCurrentValue() / cost.getTargetValue() * 100).append("%\n");
+            for (Cost cost : action.getCost()){
+                if (cost.getTargetValue() != 0) builder.append(cost.getId()).append("进度").append(cost.getCurrentValue() / cost.getTargetValue() * 100).append("%\n");
+                else builder.append(cost.getId()).append("进度").append(cost.getCurrentValue()).append("/0").append("\n");
+            }
         }
         return builder.toString();
     }
