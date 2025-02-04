@@ -197,6 +197,7 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
                 if (cost.getTargetValue() != 0) builder.append(cost.getId()).append("进度").append(cost.getCurrentValue() / cost.getTargetValue() * 100).append("%\n");
                 else builder.append(cost.getId()).append("进度").append(cost.getCurrentValue()).append("/0").append("\n");
             }
+            if (!action.getActiveEffectIds().isEmpty()) builder.append("该战术行动已激活。");
         }
         return builder.toString();
     }
