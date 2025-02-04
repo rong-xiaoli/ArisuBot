@@ -10,7 +10,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
 }
 group = 'top.rongxiaoli'
-version = '0.0.2'
+version = '0.0.3'
 
 repositories {
     maven { url 'https://maven.aliyun.com/repository/public' }
