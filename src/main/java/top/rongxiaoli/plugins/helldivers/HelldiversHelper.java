@@ -79,6 +79,10 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
         } catch (IOException e) {
             context.getSender().sendMessage("目前DiveHarder API无法访问，无法查看行动");
         }
+        if (dhDssList == null) {
+            context.getSender().sendMessage("DiveHarder API 返回值为空");
+            dhDssList = new HashMap<>();
+        }
         if (dssList.isEmpty()) {
             context.getSender().sendMessage("目前没有DSS，或者DSS处于异常情况");
             return;
