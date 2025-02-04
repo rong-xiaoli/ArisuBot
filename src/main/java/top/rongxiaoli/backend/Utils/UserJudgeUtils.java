@@ -10,6 +10,12 @@ public class UserJudgeUtils {
         LOGGER = l;
     }
     private final MiraiLogger LOGGER;
+
+    /**
+     * Judge if console is calling this command.
+     * @param context The context.
+     * @return True if console. False otherwise.
+     */
     public static boolean isConsoleCalling(CommandContext context) {
         long userID = 0, subjectID = 0;
         // From console, return:
