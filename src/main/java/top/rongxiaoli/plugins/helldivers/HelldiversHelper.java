@@ -18,6 +18,9 @@ import top.rongxiaoli.plugins.helldivers.backend.datatype.hd2.War;
 import top.rongxiaoli.plugins.helldivers.config.HD2Config;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -99,7 +102,7 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
                 mcb.add("目前星球持有方为：" + station.getPlanet().getCurrentOwner() + "\n");
                 if (info == null) mcb.add("DiveHarder API 返回值无效，无法检查战备\n");
                 else mcb.add(getTacticalActionsSummary(info));
-                mcb.add("FTL目标投票截止日期为" + station.getElectionEnd() + "\n\n");
+                mcb.add("FTL目标投票截止日期为" + Instant.parse(station.getElectionEnd().toString()).atZone(java.time.ZoneOffset.ofHours(8)).toLocalDateTime().toString() + "\n\n");
             }
         }
         context.getSender().sendMessage(mcb.build());
