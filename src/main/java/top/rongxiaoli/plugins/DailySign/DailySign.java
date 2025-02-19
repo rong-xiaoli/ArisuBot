@@ -7,22 +7,19 @@ import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
 import top.rongxiaoli.backend.interfaces.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
-import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Plugin(name = "DailySign")
 public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBase {
     private boolean pluginStatus = false;
-    private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(4);
+    private static final Timer executeTimer = new Timer();
     private volatile static AtomicInteger signCount;
     private static final DailySignData DATA = new DailySignData();
     private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(DailySign.class, "ArisuBot.DailySign");
@@ -82,17 +79,22 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         LOGGER.verbose("Data load complete. ");
         signCount = new AtomicInteger(0);
         LOGGER.verbose("No config load needed. ");
-        executorService.scheduleAtFixedRate(
+        final long PERIOD_DAY = 24 * 60 * 60 * 1000;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        executeTimer.scheduleAtFixedRate(
                 new DailySignTimer.SignCountTimer(),
-                getMilliSecondsToNextDay12AM(),
-                86400000000L,
-                TimeUnit.MILLISECONDS
+                calendar.getTime(),
+                PERIOD_DAY
         );
-        executorService.scheduleAtFixedRate(
+        executeTimer.scheduleAtFixedRate(
                 new DailySignTimer.DataSaveTimer(),
-                0,
-                5,
-                TimeUnit.MINUTES
+                Calendar.getInstance().getTime(),
+                PERIOD_DAY
         );
         LOGGER.verbose("The two scheduler started. ");
         enablePlugin();
@@ -120,7 +122,7 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         DATA.shutdown();
         LOGGER.verbose("Data shutdown complete. ");
         LOGGER.verbose("No config shutdown needed. ");
-        executorService.shutdown();
+        executeTimer.cancel();
         disablePlugin();
         LOGGER.debug("DailySign shut down. ");
     }
