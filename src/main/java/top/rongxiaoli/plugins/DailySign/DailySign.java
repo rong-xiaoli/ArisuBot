@@ -190,6 +190,7 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         }
         return false;
     }
+    @Deprecated
     private long getMilliSecondsToNextDay12AM () {
         Calendar target = Calendar.getInstance();
         target.add(Calendar.DAY_OF_YEAR, 1);
