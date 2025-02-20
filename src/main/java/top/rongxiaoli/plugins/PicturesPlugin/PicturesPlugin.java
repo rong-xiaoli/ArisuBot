@@ -37,8 +37,8 @@ public class PicturesPlugin extends ArisuBotAbstractRawCommand implements Plugin
      */
     public PicturesPlugin() {
         super("setu");
-        setUsage("[/]setu [keyword1 keyword2 keyword3 ...]     # 涩图，使用Lolicon API，可指定关键词");
-        setDescription("");
+        setDescription("涩图，使用Lolicon API，可指定关键词");
+        setUsage("[/]setu [keyword1 ...]");
         setPrefixOptional(true);
     }
 
