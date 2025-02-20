@@ -35,6 +35,7 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
         super("helldivers", "Helldivers", "HD2", "hd2");
     }
     @SubCommand({"notice", "通知"})
+    @Description("获取来自超级地球的通知")
     public void getLatestNotice(CommandContext context) {
         if (!APIChecker.stateInBoolean()) {
             context.getSender().sendMessage("目前HellDivers 2 API暂不可用，请稍后再试");
@@ -47,6 +48,7 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
         }
     }
     @SubCommand({"stats","统计"})
+    @Description("获取绝地潜兵从战斗开始到目前的战况统计")
     public void getCurrentStats(CommandContext context) {
         War war = WarInfoHelper.getWarInfo(Language.ZHS);
         MessageChainBuilder mcb = new MessageChainBuilder();
@@ -60,6 +62,7 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
         context.getSender().sendMessage(mcb.build());
     }
     @SubCommand({"info", "信息"})
+    @Description("获取当前在线人数和当前影响因数")
     public void getCurrentInfo(CommandContext context) {
         War war = WarInfoHelper.getWarInfo(Language.ZHS);
         MessageChainBuilder mcb = new MessageChainBuilder();
@@ -68,6 +71,7 @@ public class HelldiversHelper extends ArisuBotAbstractCompositeCommand {
         context.getSender().sendMessage(mcb.build());
     }
     @SubCommand({"dss", "空间站"})
+    @Description("获取空间站信息")
     public void getDSSInfo(CommandContext context) {
         List<SpaceStation2> dssList = null;
         try {
