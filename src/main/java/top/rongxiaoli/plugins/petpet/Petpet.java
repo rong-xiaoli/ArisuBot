@@ -32,10 +32,8 @@ public class Petpet extends ArisuBotAbstractRawCommand {
 
         try {
             At source = (At) args.get(0);
-            Path path = new File(ArisuBot.GetDataPath().toFile(), "petpet").toPath();
-            path.toFile().mkdirs();
-            HttpUtil.downloadFile(API + source.getTarget(), File.createTempFile("Temp", ".gif", path.toFile());
-            File.createTempFile("Temp",".gif", );
+            
+            HttpUtil.downloadFile(API + source.getTarget(), path.toFile());
             ExternalResource.uploadAsImage()
             sender.sendMessage();
 
