@@ -13,6 +13,7 @@ import top.rongxiaoli.backend.Commands.ArisuBotAbstractRawCommand;
 import top.rongxiaoli.backend.interfaces.Plugin;
 
 import java.io.*;
+import java.nio.file.Path;
 
 @Plugin(name = "Petpet")
 public class Petpet extends ArisuBotAbstractRawCommand {
@@ -31,13 +32,17 @@ public class Petpet extends ArisuBotAbstractRawCommand {
 
         try {
             At source = (At) args.get(0);
-            byte[] file = HttpUtil.downloadFile(API + source.getTarget(), );
+            Path path = new File(ArisuBot.GetDataPath().toFile(), "petpet").toPath();
+            path.toFile().mkdirs();
+            HttpUtil.downloadFile(API + source.getTarget(), File.createTempFile("Temp", ".gif", path.toFile());
             File.createTempFile("Temp",".gif", );
             ExternalResource.uploadAsImage()
             sender.sendMessage();
 
         } catch (ClassCastException e) {
             SingleMessage source = args.get(0);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
     @Override
