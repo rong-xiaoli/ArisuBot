@@ -3,20 +3,20 @@ package top.rongxiaoli.plugins.petpet;
 import cn.hutool.http.HttpUtil;
 import net.mamoe.mirai.console.command.CommandSender;
 import net.mamoe.mirai.message.data.At;
+import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChain;
-import net.mamoe.mirai.message.data.SingleMessage;
 import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
-import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractRawCommand;
+import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
 import top.rongxiaoli.backend.interfaces.Plugin;
 
 import java.io.*;
-import java.nio.file.Path;
+import java.nio.file.Files;
 
 @Plugin(name = "Petpet")
-public class Petpet extends ArisuBotAbstractRawCommand {
+public class Petpet extends ArisuBotAbstractSimpleCommand {
     public static Petpet INSTANCE = new Petpet();
     private static final String API = "https://api.andeer.top/API/gif_mo.php?qq=";
     private static volatile boolean pluginStatus = false;
@@ -27,21 +27,38 @@ public class Petpet extends ArisuBotAbstractRawCommand {
         setDescription("摸一摸某人");
     }
 
-    @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull MessageChain args) {
-
+    //@Override
+    @Handler
+    public void onCommand(@NotNull CommandSender sender, At target) {
+        if (sender.getSubject() == null) {
+            return;
+        }
+        File file = null;
         try {
-            At source = (At) args.get(0);
-            
-            HttpUtil.downloadFile(API + source.getTarget(), path.toFile());
-            ExternalResource.uploadAsImage()
-            sender.sendMessage();
-
-        } catch (ClassCastException e) {
-            SingleMessage source = args.get(0);
+            file = File.createTempFile("Cache", ".gif");
+        } catch (IOException e) {
+            sender.getSubject().sendMessage("无法创建临时文件");
+        }
+        byte[] content = HttpUtil.downloadBytes(API + target.getTarget());
+        BufferedOutputStream stream = null;
+        try {
+            stream = new BufferedOutputStream(Files.newOutputStream(file.toPath()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        try {
+            stream.write(content);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            stream.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Image image = ExternalResource.uploadAsImage(file, sender.getSubject());
+        sender.sendMessage(image);
+        file.delete();
     }
     @Override
     public void load() {
