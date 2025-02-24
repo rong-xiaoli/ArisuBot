@@ -3,7 +3,6 @@ package top.rongxiaoli.plugins.petpet.backend;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.http.HttpUtil;
 import net.mamoe.mirai.console.command.CommandContext;
-import net.mamoe.mirai.console.command.CommandSender;
 import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.utils.ExternalResource;
@@ -20,17 +19,17 @@ public class TargetResolver {
     private static final String API = "https://api.andeer.top/API/gif_mo.php?qq=";
     public static void handleAt(@NotNull CommandContext context, At target) throws IOException{
         String targetID = String.valueOf(target.getTarget());
-        sendTargetPict(context, targetID);
+        handle(context, targetID);
     }
     public static void handleString(@NotNull CommandContext context, String target) throws IOException {
         try {
             long targetID = Long.parseLong(ReUtil.get("\\d+", target, 0));
-            sendTargetPict(context, String.valueOf(targetID));
+            handle(context, String.valueOf(targetID));
         } catch (NumberFormatException e) {
             context.getSender().sendMessage("请输入ID或直接@摸头对象");
         }
     }
-    private static void sendTargetPict(@NotNull CommandContext context, String target) throws IOException {
+    public static void handle(@NotNull CommandContext context, String target) throws IOException {
         File file = null;
         File path = new File(ArisuBot.GetDataPath().toFile(), "petpet");
         path.mkdirs();

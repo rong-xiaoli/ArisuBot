@@ -1,23 +1,16 @@
 package top.rongxiaoli.plugins.petpet;
 
-import cn.hutool.http.HttpUtil;
 import net.mamoe.mirai.console.command.CommandContext;
-import net.mamoe.mirai.console.command.CommandSender;
 import net.mamoe.mirai.message.data.At;
-import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.SingleMessage;
-import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
-import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractRawCommand;
-import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
 import top.rongxiaoli.backend.interfaces.Plugin;
 import top.rongxiaoli.plugins.petpet.backend.TargetResolver;
 
-import java.io.*;
-import java.nio.file.Files;
+import java.io.IOException;
 
 @Plugin(name = "Petpet")
 public class Petpet extends ArisuBotAbstractRawCommand {
@@ -27,11 +20,22 @@ public class Petpet extends ArisuBotAbstractRawCommand {
 
     public Petpet() {
         super("pet", "摸", "petpet");
-        setDescription("摸一摸某人");
+        setDescription("摸一摸某人，不带参数摸自己，可以@某人，也可以输入QQ号摸对应用户");
+        setUsage("/pet {[@someone]|[QQID]}");
+        setPrefixOptional(true);
     }
 
     @Override
     public void onCommand(@NotNull CommandContext context, @NotNull MessageChain args) {
+        if (args.isEmpty()) {
+            try {
+                TargetResolver.handle(context, String.valueOf(context.getSender().getUser().getId()));
+                return;
+            } catch (IOException e) {
+                context.getSender().sendMessage("网络错误");
+                return;
+            }
+        }
         SingleMessage arg = args.get(0);
         if (arg instanceof At) {
             try {
