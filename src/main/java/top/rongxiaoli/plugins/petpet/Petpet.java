@@ -14,8 +14,8 @@ import java.io.IOException;
 
 @Plugin(name = "Petpet")
 public class Petpet extends ArisuBotAbstractRawCommand {
-    public static Petpet INSTANCE = new Petpet();
-    private static volatile boolean pluginStatus = false;
+    public static final Petpet INSTANCE = new Petpet();
+    private volatile boolean pluginStatus = false;
     private static MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Petpet.class, "ArisuBot.Petpet");
 
     public Petpet() {
