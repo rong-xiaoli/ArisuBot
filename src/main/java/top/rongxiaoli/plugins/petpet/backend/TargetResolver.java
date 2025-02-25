@@ -44,6 +44,7 @@ public class TargetResolver {
         }
         Image image = ExternalResource.uploadAsImage(file, context.getSender().getSubject());
         context.getSender().sendMessage(image);
-        file.deleteOnExit();
+        file.delete();
+        stream.close();
     }
 }

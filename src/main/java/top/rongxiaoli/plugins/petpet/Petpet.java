@@ -1,9 +1,7 @@
 package top.rongxiaoli.plugins.petpet;
 
 import net.mamoe.mirai.console.command.CommandContext;
-import net.mamoe.mirai.message.data.At;
-import net.mamoe.mirai.message.data.MessageChain;
-import net.mamoe.mirai.message.data.SingleMessage;
+import net.mamoe.mirai.message.data.*;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractRawCommand;
@@ -32,7 +30,11 @@ public class Petpet extends ArisuBotAbstractRawCommand {
                 TargetResolver.handle(context, String.valueOf(context.getSender().getUser().getId()));
                 return;
             } catch (IOException e) {
-                context.getSender().sendMessage("网络错误");
+                MessageChainBuilder builder = new MessageChainBuilder();
+                builder.add(new QuoteReply(context.getOriginalMessage()));
+                builder.add("发生错误");
+                context.getSender().sendMessage(builder.build());
+                LOGGER.error(e);
                 return;
             }
         }
@@ -41,14 +43,23 @@ public class Petpet extends ArisuBotAbstractRawCommand {
             try {
                 TargetResolver.handleAt(context, (At) arg);
             } catch (IOException e) {
-                context.getSender().sendMessage("发生错误");
+                MessageChainBuilder builder = new MessageChainBuilder();
+                builder.add(new QuoteReply(context.getOriginalMessage()));
+                builder.add("发生错误");
+                context.getSender().sendMessage(builder.build());
+                LOGGER.error(e);
+                return;
             }
             return;
         }
         try {
             TargetResolver.handleString(context, arg.contentToString());
         } catch (IOException e) {
-            context.getSender().sendMessage("发生错误");
+            MessageChainBuilder builder = new MessageChainBuilder();
+            builder.add(new QuoteReply(context.getOriginalMessage()));
+            builder.add("发生错误");
+            context.getSender().sendMessage(builder.build());
+            LOGGER.error(e);
         }
     }
     @Override
