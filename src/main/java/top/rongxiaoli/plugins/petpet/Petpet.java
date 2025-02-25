@@ -14,7 +14,7 @@ import java.io.IOException;
 public class Petpet extends ArisuBotAbstractRawCommand {
     public static final Petpet INSTANCE = new Petpet();
     private volatile boolean pluginStatus = false;
-    private static MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Petpet.class, "ArisuBot.Petpet");
+    private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(Petpet.class, "ArisuBot.Petpet");
 
     public Petpet() {
         super("pet", "摸", "petpet");
