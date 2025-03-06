@@ -1,16 +1,12 @@
 package top.rongxiaoli.backend;
 
 import net.mamoe.mirai.event.AbstractEvent;
-import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.*;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
-import top.rongxiaoli.backend.PluginLoader.PluginLoader;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
-import top.rongxiaoli.plugins.AutoAccept.AutoAccept;
-import top.rongxiaoli.plugins.PokeReact.PokeReact;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
@@ -28,8 +24,7 @@ public class EventListener extends SimpleListenerHost {
         for (PluginBase plugin :
                 ArisuBot.LOADER.getPlugins()) {
             List<Method> targets = getAnnotatedMethods(plugin, top.rongxiaoli.backend.interfaces.annotations.NudgeEvent.class);
-            if (targets.isEmpty()) continue;
-            else invokeEachTargetMethod(targets, e);
+            if (!targets.isEmpty()) invokeEachTargetMethod(plugin, targets, e);
         }
     }
     @EventHandler
@@ -37,21 +32,40 @@ public class EventListener extends SimpleListenerHost {
         for (PluginBase plugin :
                 ArisuBot.LOADER.getPlugins()) {
             List<Method> targets = getAnnotatedMethods(plugin, top.rongxiaoli.backend.interfaces.annotations.BotInvitedJoinGroupRequestEvent.class);
-            LOGGER.verbose("Found plugin with annotation in class: " + plugin.getPrimaryName());
+            if (!targets.isEmpty()) invokeEachTargetMethod(plugin, targets, e);
         }
-        AutoAccept.INSTANCE.onBotInvitedJoinGroupRequestEvent(e);
     }
     @EventHandler
     public void onFriendAddEvent(FriendAddEvent e) {
-        AutoAccept.INSTANCE.onFriendAddEvent(e);
+        for (PluginBase plugin :
+                ArisuBot.LOADER.getPlugins()) {
+            List<Method> targets = getAnnotatedMethods(plugin, top.rongxiaoli.backend.interfaces.annotations.FriendAddEvent.class);
+            if (!targets.isEmpty()) invokeEachTargetMethod(plugin, targets, e);
+        }
     }
     @EventHandler
     public void onBotJoinGroupEvent(BotJoinGroupEvent e) {
-        AutoAccept.INSTANCE.onBotJoinGroupEvent(e);
+        for (PluginBase plugin :
+                ArisuBot.LOADER.getPlugins()) {
+            List<Method> targets = getAnnotatedMethods(plugin, top.rongxiaoli.backend.interfaces.annotations.BotJoinGroupEvent.class);
+            if (!targets.isEmpty()) invokeEachTargetMethod(plugin, targets, e);
+        }
     }
     @EventHandler
     public void onNewFriendRequestEvent(NewFriendRequestEvent e) {
-        AutoAccept.INSTANCE.onNewFriendRequestEvent(e);
+        for (PluginBase plugin :
+                ArisuBot.LOADER.getPlugins()) {
+            List<Method> targets = getAnnotatedMethods(plugin, top.rongxiaoli.backend.interfaces.annotations.NewFriendRequestEvent.class);
+            if (!targets.isEmpty()) invokeEachTargetMethod(plugin, targets, e);
+        }
+    }
+    @EventHandler
+    public void onMemberLeaveEvent(MemberLeaveEvent e) {
+        for (PluginBase base :
+                ArisuBot.LOADER.getPlugins()) {
+            List<Method> targets = getAnnotatedMethods(base, top.rongxiaoli.backend.interfaces.annotations.MemberLeaveEvent.class);
+            if (!targets.isEmpty()) invokeEachTargetMethod(base, targets, e);
+        }
     }
 
     private List<Method> getAnnotatedMethods(PluginBase plugin, Class<? extends Annotation> annotation) {
@@ -65,11 +79,11 @@ public class EventListener extends SimpleListenerHost {
         }
         return out;
     }
-    private void invokeEachTargetMethod(List<Method> methods, Class<? extends BotEvent> e) {
+    private void invokeEachTargetMethod(PluginBase base, List<Method> methods, AbstractEvent e) {
         for (Method method :
                 methods) {
             try {
-                method.invoke(e);
+                method.invoke(base, e);
             } catch (InvocationTargetException ex) {
                 LOGGER.error("Fail to invoke method, target error: " + method.getName(), ex);
             } catch (IllegalAccessException ex) {

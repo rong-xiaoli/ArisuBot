@@ -4,7 +4,6 @@ import net.mamoe.mirai.console.command.CommandContext;
 import net.mamoe.mirai.contact.Stranger;
 import net.mamoe.mirai.event.events.BotInvitedJoinGroupRequestEvent;
 import net.mamoe.mirai.event.events.BotJoinGroupEvent;
-import net.mamoe.mirai.event.events.FriendAddEvent;
 import net.mamoe.mirai.event.events.NewFriendRequestEvent;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.MiraiLogger;
@@ -38,7 +37,7 @@ public class AutoAccept extends ArisuBotAbstractCompositeCommand {
         if (isAutoAcceptEnabled) context.getSender().sendMessage("已启用自动添加。");
         else context.getSender().sendMessage("已禁用自动添加。");
     }
-
+    @top.rongxiaoli.backend.interfaces.annotations.NewFriendRequestEvent
     public void onNewFriendRequestEvent(NewFriendRequestEvent e) {
         if (isAutoAcceptEnabled) {
             e.accept();
@@ -48,7 +47,8 @@ public class AutoAccept extends ArisuBotAbstractCompositeCommand {
             e.reject(false);
         }
     }
-    public void onFriendAddEvent(FriendAddEvent e) {
+    @top.rongxiaoli.backend.interfaces.annotations.FriendAddEvent
+    public void onFriendAddEvent(net.mamoe.mirai.event.events.FriendAddEvent e) {
         MessageChainBuilder mcb = new MessageChainBuilder();
         mcb.add("邦邦卡邦！你好，欢迎使用ArisuBot！\n");
         mcb.add("本项目为开源Bot，项目在GitHub开源。\n");
@@ -57,6 +57,7 @@ public class AutoAccept extends ArisuBotAbstractCompositeCommand {
         mcb.add("镜像：https://gitee.com/rong_xiaoli/ArisuBot");
         e.getFriend().sendMessage(mcb.build());
     }
+    @top.rongxiaoli.backend.interfaces.annotations.BotInvitedJoinGroupRequestEvent
     public void onBotInvitedJoinGroupRequestEvent(BotInvitedJoinGroupRequestEvent e) {
         if (isAutoAcceptEnabled) {
             e.accept();
@@ -70,6 +71,7 @@ public class AutoAccept extends ArisuBotAbstractCompositeCommand {
             if (stranger != null) stranger.sendMessage("暂不支持邀请进群");
         }
     }
+    @top.rongxiaoli.backend.interfaces.annotations.BotJoinGroupEvent
     public void onBotJoinGroupEvent(BotJoinGroupEvent e) {
         MessageChainBuilder mcb = new MessageChainBuilder();
         mcb.add("邦邦卡邦！你好，欢迎使用ArisuBot！\n");

@@ -56,7 +56,7 @@ public class PokeReact extends ArisuBotAbstractSimpleCommand implements NudgeEve
         LOGGER.verbose(String.valueOf(branch));
         switch (branch) {
             default:
-                LOGGER.warning("Unexpected value " + random + " received, range 1 to 4. ");
+                LOGGER.warning("Unexpected value " + random + " received. ");
             case 1:
                 PokeBack p = new PokeBack();
                 p.React(event);
