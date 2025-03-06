@@ -6,7 +6,7 @@ import net.mamoe.mirai.message.data.QuoteReply;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
-import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 
 @Plugin(name = "EmergencyStop")
 public class EmergencyStop extends ArisuBotAbstractCompositeCommand {

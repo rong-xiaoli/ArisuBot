@@ -1,16 +1,17 @@
 package top.rongxiaoli.plugins.PokeReact;
 
 import net.mamoe.mirai.console.command.CommandContext;
-import net.mamoe.mirai.event.events.NudgeEvent;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
-import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.annotations.NudgeEvent;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
+import top.rongxiaoli.backend.interfaces.handler.NudgeEventHandler;
 import top.rongxiaoli.plugins.PokeReact.backend.PokeReactTextConfig;
 
 import java.security.SecureRandom;
 import java.util.Objects;
 @Plugin(name = "PokeReact")
-public class PokeReact extends ArisuBotAbstractSimpleCommand {
+public class PokeReact extends ArisuBotAbstractSimpleCommand implements NudgeEventHandler {
     public static final PokeReact INSTANCE = new PokeReact();
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(PokeReact.class, "ArisuBot.PokeReact");
     private boolean pluginStatus = false;
@@ -45,7 +46,8 @@ public class PokeReact extends ArisuBotAbstractSimpleCommand {
                 break;
         }
     }
-    public void onNudgeEvent(NudgeEvent event) {
+    @NudgeEvent
+    public void onNudgeEvent(net.mamoe.mirai.event.events.NudgeEvent event) {
         if (event.getTarget().getId() != event.getBot().getId()) return;
         int branch;
         SecureRandom random = new SecureRandom();

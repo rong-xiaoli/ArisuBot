@@ -9,7 +9,7 @@ import net.mamoe.mirai.event.events.NewFriendRequestEvent;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
-import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 
 @Plugin(name = "AutoAccept")
 public class AutoAccept extends ArisuBotAbstractCompositeCommand {

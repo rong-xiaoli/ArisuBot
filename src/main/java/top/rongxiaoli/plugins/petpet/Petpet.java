@@ -5,7 +5,7 @@ import net.mamoe.mirai.message.data.*;
 import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractRawCommand;
-import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 import top.rongxiaoli.plugins.petpet.backend.TargetResolver;
 
 import java.io.IOException;

@@ -10,16 +10,14 @@ import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
 import top.rongxiaoli.backend.Utils.UserJudgeUtils;
-import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 import top.rongxiaoli.plugins.OsuBot.backend.osusig.OsuSigUtils;
 import top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct.OsuSigBaseData;
 import top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct.OsuSigEnum;
 import top.rongxiaoli.plugins.OsuBot.backend.osusig.dataStruct.OsuSigSettings;
-import top.rongxiaoli.plugins.OsuBot.data.OsuData;
 import top.rongxiaoli.plugins.OsuBot.utils.OsuUtils;
 
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Objects;
 
 @Plugin(name = "OsuBot")

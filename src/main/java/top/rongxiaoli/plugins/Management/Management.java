@@ -4,7 +4,7 @@ import net.mamoe.mirai.console.command.CommandContext;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
-import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 
 @Plugin(name = "Management")
 public class Management extends ArisuBotAbstractCompositeCommand {
