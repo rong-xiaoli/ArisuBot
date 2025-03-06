@@ -19,11 +19,28 @@ import java.util.List;
  */
 public class EventListener extends SimpleListenerHost {
     private static final MiraiLogger LOGGER  = MiraiLogger.Factory.INSTANCE.create(EventListener.class, "ArisuBot.EventListener");
+
     @EventHandler
     public void onPoke(NudgeEvent e) {
         for (PluginBase plugin :
                 ArisuBot.LOADER.getPlugins()) {
             List<Method> targets = getAnnotatedMethods(plugin, top.rongxiaoli.backend.interfaces.annotations.NudgeEvent.class);
+            if (!targets.isEmpty()) invokeEachTargetMethod(plugin, targets, e);
+        }
+    }
+    @EventHandler
+    public void onFriendMessage(FriendMessageEvent e) {
+        for (PluginBase plugin :
+                ArisuBot.LOADER.getPlugins()) {
+            List<Method> targets = getAnnotatedMethods(plugin, top.rongxiaoli.backend.interfaces.annotations.FriendMessageEvent.class);
+            if (!targets.isEmpty()) invokeEachTargetMethod(plugin, targets, e);
+        }
+    }
+    @EventHandler
+    public void onGroupMessage(GroupMessageEvent e) {
+        for (PluginBase plugin :
+                ArisuBot.LOADER.getPlugins()) {
+            List<Method> targets = getAnnotatedMethods(plugin, top.rongxiaoli.backend.interfaces.annotations.GroupMessageEvent.class);
             if (!targets.isEmpty()) invokeEachTargetMethod(plugin, targets, e);
         }
     }
