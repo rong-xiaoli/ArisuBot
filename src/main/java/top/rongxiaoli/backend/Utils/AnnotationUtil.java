@@ -1,6 +1,6 @@
 package top.rongxiaoli.backend.Utils;
 
-import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;

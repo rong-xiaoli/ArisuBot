@@ -16,8 +16,11 @@
 分别对应mirai框架提供的`JCompositeCommand`，`JRawCommand`和`JSimpleCommand`。
 ## Step 2
 在你的类上添加一个注解：
+
 ```java
-@top.rongxiaoli.backend.interfaces.Plugin(name = "[YourPluginName]")
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
+
+@Plugin(name = "[YourPluginName]")
 ```
 ## Step 3
 编写类主要业务代码

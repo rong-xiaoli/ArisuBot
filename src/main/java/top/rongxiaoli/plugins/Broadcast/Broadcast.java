@@ -7,7 +7,7 @@ import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractCompositeCommand;
-import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 
 import java.util.Objects;
 import java.util.Random;

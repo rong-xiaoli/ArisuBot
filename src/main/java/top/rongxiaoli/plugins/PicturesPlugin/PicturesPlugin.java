@@ -13,7 +13,7 @@ import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractRawCommand;
-import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.io.File;

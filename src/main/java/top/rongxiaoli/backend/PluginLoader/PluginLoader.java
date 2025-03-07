@@ -5,7 +5,7 @@ import net.mamoe.mirai.console.command.CommandManager;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Utils.ClassUtil;
-import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.lang.reflect.Field;
@@ -19,9 +19,14 @@ public class PluginLoader {
      * Plugin list.
      */
     protected CopyOnWriteArrayList<PluginBase> PluginList;
+    private final List<Package> targetPackages = new ArrayList<>();
     private final CommandManager INSTANCE = CommandManager.INSTANCE;
     public PluginLoader() {
         this.PluginList = new CopyOnWriteArrayList<>();
+
+        // Package scan list start.
+        targetPackages.add(ArisuBot.class.getPackage());
+        // Package scan list end.
     }
     public boolean reload(String target) {
         for (PluginBase item :
@@ -77,16 +82,10 @@ public class PluginLoader {
      * This plugin is to add all plugins marked with Annotation {@code Plugin} into plugin list.
      */
     private void addPlugins() {
-        List<Package> checklist = new ArrayList<>();
-
-        // Package scan list start.
-        checklist.add(ArisuBot.class.getPackage());
-        // Package scan list end.
-
         LOGGER.debug("Loading classes from packages below: ");
         List<Class<?>> reflectClasses = new ArrayList<>();
         for (Package pack :
-                checklist) {
+                targetPackages) {
             LOGGER.debug(pack.toString());
             reflectClasses.addAll(ClassUtil.scan(pack, ArisuBot.GetPluginClassLoader()));
         }
@@ -117,5 +116,13 @@ public class PluginLoader {
             LOGGER.verbose("Found plugin: " + e.getClass().getName());
         }
         ArisuBot.INSTANCE.getLogger().verbose("Found " + PluginList.size() + " plugins. ");
+    }
+
+    /**
+     * Get all plugins loaded.
+     * @return A list with all plugins loaded.
+     */
+    public List<PluginBase> getPlugins() {
+        return this.PluginList;
     }
 }

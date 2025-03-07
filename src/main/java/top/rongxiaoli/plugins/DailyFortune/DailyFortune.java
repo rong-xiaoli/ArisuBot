@@ -7,7 +7,7 @@ import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
-import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.io.File;

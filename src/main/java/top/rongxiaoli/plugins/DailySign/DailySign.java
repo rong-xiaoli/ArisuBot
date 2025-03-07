@@ -4,7 +4,7 @@ import net.mamoe.mirai.console.command.CommandContext;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
-import top.rongxiaoli.backend.interfaces.Plugin;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
 
 import java.time.LocalDateTime;
@@ -13,7 +13,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Objects;
 import java.util.Timer;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Plugin(name = "DailySign")
