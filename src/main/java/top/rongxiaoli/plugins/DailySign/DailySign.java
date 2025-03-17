@@ -18,11 +18,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Plugin(name = "DailySign")
 public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBase {
     private boolean pluginStatus = false;
-    private static final Timer executeTimer = new Timer();
+    private static final Timer dataSaveExecuteTimer = new Timer();
+    private static final Timer signCountResetter = new Timer();
     private volatile static AtomicInteger signCount;
     private static final DailySignData DATA = new DailySignData();
     private static final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(DailySign.class, "ArisuBot.DailySign");
     public static final DailySign INSTANCE = new DailySign();
+
     public static void clearSignCount() {
         signCount.set(0);
     }
@@ -79,21 +81,21 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         signCount = new AtomicInteger(0);
         LOGGER.verbose("No config load needed. ");
         final long PERIOD_DAY = 24 * 60 * 60 * 1000;
-        Calendar calendar = Calendar.getInstance();
+        GregorianCalendar calendar = new GregorianCalendar();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        calendar.add(Calendar.DAY_OF_YEAR, 1);
-        executeTimer.scheduleAtFixedRate(
+        calendar.add(Calendar.DAY_OF_YEAR, -1);
+        signCountResetter.scheduleAtFixedRate(
                 new DailySignTimer.SignCountTimer(),
                 calendar.getTime(),
                 PERIOD_DAY
         );
-        executeTimer.scheduleAtFixedRate(
+        dataSaveExecuteTimer.scheduleAtFixedRate(
                 new DailySignTimer.DataSaveTimer(),
                 Calendar.getInstance().getTime(),
-                PERIOD_DAY
+                5 * 60 * 1000
         );
         LOGGER.verbose("The two scheduler started. ");
         enablePlugin();
@@ -121,7 +123,7 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         DATA.shutdown();
         LOGGER.verbose("Data shutdown complete. ");
         LOGGER.verbose("No config shutdown needed. ");
-        executeTimer.cancel();
+        dataSaveExecuteTimer.cancel();
         disablePlugin();
         LOGGER.debug("DailySign shut down. ");
     }
