@@ -123,6 +123,7 @@ public class DailySign extends ArisuBotAbstractSimpleCommand implements PluginBa
         DATA.shutdown();
         LOGGER.verbose("Data shutdown complete. ");
         LOGGER.verbose("No config shutdown needed. ");
+        signCountResetter.cancel();
         dataSaveExecuteTimer.cancel();
         disablePlugin();
         LOGGER.debug("DailySign shut down. ");
