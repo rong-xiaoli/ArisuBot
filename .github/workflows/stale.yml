@@ -25,3 +25,5 @@ jobs:
         stale-pr-message: 'This PR is automatically closed because of inactivity. '
         stale-issue-label: 'stale'
         stale-pr-label: 'stale'
+        close-issue-reason: 'not_planned'
+        days-before-stale: 30
