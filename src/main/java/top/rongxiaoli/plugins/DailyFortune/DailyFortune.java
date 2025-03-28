@@ -7,26 +7,26 @@ import net.mamoe.mirai.utils.ExternalResource;
 import net.mamoe.mirai.utils.MiraiLogger;
 import top.rongxiaoli.ArisuBot;
 import top.rongxiaoli.backend.Commands.ArisuBotAbstractSimpleCommand;
-import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 import top.rongxiaoli.backend.interfaces.PluginBase.PluginBase;
+import top.rongxiaoli.backend.interfaces.annotations.Plugin;
 
 import java.io.File;
 import java.security.SecureRandom;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
+
 @Plugin(name = "DailyFortune")
 public class DailyFortune extends ArisuBotAbstractSimpleCommand implements PluginBase {
     public static final DailyFortune INSTANCE = new DailyFortune();
-    private boolean pluginStatus = false;
+    private static final Timer timer = new Timer();
     private final MiraiLogger LOGGER = MiraiLogger.Factory.INSTANCE.create(DailyFortune.class, "ArisuBot.DailyFortune");
+    private boolean pluginStatus = false;
 
     public DailyFortune() {
-        super("fortune", "yunshi", "今日运势", "jrys");
+        super("fortune", "yunshi", "今日运势", "jrys", "jrrp", "今日人品");
         setDescription("今日运势，今天幸运吗？");
         setPrefixOptional(true);
     }
+
     @Handler
     public void onCommand(CommandSender sender) {
         if (!pluginStatus) return;
@@ -53,9 +53,8 @@ public class DailyFortune extends ArisuBotAbstractSimpleCommand implements Plugi
             File[] targetFiles = directoryPathFile.listFiles(new UploadFileFilter("jpg", "png", "jpeg", "bmp"));
             if ((targetFiles != null ? targetFiles.length : 0) == 0) {
                 LOGGER.info("No pictures for random, pass. ");
-            }
-            else {
-                File targetFile = targetFiles[random.nextInt(0,targetFiles.length)];
+            } else {
+                File targetFile = targetFiles[random.nextInt(0, targetFiles.length)];
                 Image image = ExternalResource.uploadAsImage(targetFile, Objects.requireNonNull(sender.getSubject()));
                 mcb.append(image);
             }
@@ -81,6 +80,7 @@ public class DailyFortune extends ArisuBotAbstractSimpleCommand implements Plugi
         rand = new Random(seedLong);
         return rand.nextInt(0, 101);
     }
+
     private String getWishString(int fortuneRandom) {
         // Fixme: Use switch - case instead of if - else if - else.
         if (fortuneRandom == 0) {
@@ -103,6 +103,7 @@ public class DailyFortune extends ArisuBotAbstractSimpleCommand implements Plugi
             return "哇！欧皇！";
         } else return "这啥？";
     }
+
     private String getWishLevel(int fortuneRandom) {
         // Fixme: Use switch - case instead of if - else if - else.
         if (fortuneRandom == 0) {
@@ -119,6 +120,7 @@ public class DailyFortune extends ArisuBotAbstractSimpleCommand implements Plugi
             return "大吉";
         } else return " ";
     }
+
     /**
      * Load method. First time loading.
      */
@@ -132,6 +134,18 @@ public class DailyFortune extends ArisuBotAbstractSimpleCommand implements Plugi
         }
         enablePlugin();
         LOGGER.debug("Command loaded. ");
+        final long PERIOD_DAY = 24 * 60 * 60 * 1000;
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.DAY_OF_YEAR, -1);
+        timer.scheduleAtFixedRate(
+                new DailyPictFetch.DailyPictureFetch(),
+                calendar.getTime(),
+                PERIOD_DAY
+        );
     }
 
     /**
@@ -148,6 +162,7 @@ public class DailyFortune extends ArisuBotAbstractSimpleCommand implements Plugi
     @Override
     public void shutdown() {
         disablePlugin();
+        timer.cancel();
         LOGGER.debug("DailyFortune shut down. ");
     }
 
