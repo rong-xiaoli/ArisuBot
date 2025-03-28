@@ -16,7 +16,6 @@ public class DailySignString {
      * @return NewRandom string.
      */
     public static String GetRandomString() {
-        DayOfWeek Week = DayOfWeek.of(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
         LocalDateTime presentTime = LocalDateTime.now();
 
         int year = presentTime.getYear(),
@@ -26,6 +25,7 @@ public class DailySignString {
                 minute = presentTime.getMinute(),
                 second = presentTime.getSecond(),
                 millisecond = presentTime.getNano();
+        DayOfWeek week = presentTime.getDayOfWeek();
 
         //Variables declaration.
         String YearBasedString;
@@ -106,13 +106,13 @@ public class DailySignString {
         if (month == 5 && day == 4) {
             MixedString = "我们是初升的太阳， 用生命点燃未来！";
         }
-        if (month == 5 && day >= 8 && day <= 14 && Week.getValue() == 7) {
+        if (month == 5 && day >= 8 && day <= 14 && week.equals(DayOfWeek.SUNDAY)) {
             MixedString = "母爱的伟大！";
         }
         if (month == 6 && day == 1) {
             MixedString = "给祖国未来花献花~";
         }
-        if (month == 6 && day >= 15 && day <= 21 && Week.getValue() == 7) {
+        if (month == 6 && day >= 15 && day <= 21 && week.equals(DayOfWeek.SUNDAY)) {
             MixedString = "给爸爸揉揉肩吧~";
         }
         if (month == 7 && day == 1) {
@@ -192,7 +192,7 @@ public class DailySignString {
                 break;
         }
         //Day of week only.
-        switch (Week) {
+        switch (week) {
             case MONDAY:
                 WeekBasedString = "一周之始~今天也要加油呀~";
                 break;
@@ -216,7 +216,7 @@ public class DailySignString {
                 break;
             default:
                 WeekBasedString = "美好的一天~";
-                LOGGER.warning("Unexpected value: Week = " + Week);
+                LOGGER.warning("Unexpected value: Week = " + week);
                 break;
         }
         //Day only.
