@@ -4,7 +4,6 @@ import net.mamoe.mirai.utils.MiraiLogger;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.Random;
 
 public class DailySignString {
@@ -216,7 +215,7 @@ public class DailySignString {
                 break;
             default:
                 WeekBasedString = "美好的一天~";
-                LOGGER.warning("Unexpected value: Week = " + week);
+                LOGGER.warning("Unexpected value: week = " + week);
                 break;
         }
         //Day only.
