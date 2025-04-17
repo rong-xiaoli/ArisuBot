@@ -103,7 +103,7 @@ public class PluginLoader {
             try {
                 Field f = clazz.getDeclaredField("INSTANCE");
                 PluginList.add((PluginBase) f.get(null));
-                INSTANCE.registerCommand((Command) f.get(null), false);
+                INSTANCE.registerCommand((Command) f.get(null), true);
             } catch (NoSuchFieldException | IllegalAccessException e) {
                 LOGGER.error("Cannot load class " + clazz.getName() + " because field \"INSTANCE\" was not found or is inaccessible.");
                 LOGGER.error("Exception details: ", e);
